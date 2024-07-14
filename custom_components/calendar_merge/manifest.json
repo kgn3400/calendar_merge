@@ -1,0 +1,21 @@
+{
+  "domain": "calendar_merge",
+  "name": "Calendar merge",
+  "codeowners": [
+    "@kgn3400"
+  ],
+  "config_flow": true,
+  "dependencies": [],
+  "documentation": "https://github.com/kgn3400/calendar_merge",
+  "homekit": {},
+  "integration_type": "helper",
+  "iot_class": "calculated",
+  "issue_tracker": "https://github.com/kgn3400/calendar_merge/issues",
+  "requirements": [
+    "babel",
+    "arrow"
+  ],
+  "ssdp": [],
+  "version": "1.0.0",
+  "zeroconf": []
+}

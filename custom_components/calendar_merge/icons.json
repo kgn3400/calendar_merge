@@ -1,0 +1,12 @@
+{
+  "entity": {
+    "sensor": {
+      "calendar_merge": {
+        "default": "mdi:calendar-clock-outline"
+      }
+    }
+  },
+  "services": {
+    "reset": "mdi:close-circle-outline"
+  }
+}

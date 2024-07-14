@@ -1,0 +1,24 @@
+# Service ID
+toggle_show_as_time_to:
+  target:
+    entity:
+      integration: calendar_merge
+      domain: sensor
+      supported_features:
+        - fan.FanEntityFeature.SET_SPEED
+  fields:
+    # Key of the field
+    save_settings:
+      # Field name as shown in UI
+      # name: Order by
+      # Description of the field
+      # description: Order message list by
+      # Whether or not field is required (default = false)
+      required: false
+      # Advanced fields are only shown when the advanced mode is enabled for the user
+      # (default = false)
+      example: false
+      # The default field value
+      default: false
+      selector:
+        boolean:
