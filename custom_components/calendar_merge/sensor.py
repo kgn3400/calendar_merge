@@ -130,7 +130,7 @@ class CalendarMergeSensor(SensorEntity, BaseCalendarMergeSensor):
         ]
 
         self.coordinator.update_method = self.async_refresh
-        self.coordinator.update_interval = timedelta(minutes=1)
+        self.coordinator.update_interval = timedelta(minutes=5)
 
         self.platform: EntityPlatform = entity_platform.async_get_current_platform()
 

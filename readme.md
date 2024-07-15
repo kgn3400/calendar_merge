@@ -8,8 +8,9 @@
 
 The calendar merge helper allows you to create an overall overview for one or more calendars. For a certain number of days into the future and a maximum number of events.
 
-There will be created a main sensor with the number of calendar events. And attributes with events formatted and raw to create the markdown text.
+There will be created a calendar with the merged calendar events and a main sensor with the number of calendar events. And attributes with events formatted and raw to create the markdown text or used a template.
 And for each event there will be created a sensor with a postfix _event_0 to _event_x with the summary and the event date.
+Please note that changes to the monitored calendars first will be reflected in the Calendar merge helper within a couple of minutes.
 
 For installation instructions until the Calendar merge helper is part of HACS, [see this guide](https://hacs.xyz/docs/faq/custom_repositories).
 Or click

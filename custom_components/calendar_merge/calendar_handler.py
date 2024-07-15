@@ -1,4 +1,4 @@
-"""Calendar handler helper."""
+"""Calendar handler."""
 
 from __future__ import annotations
 

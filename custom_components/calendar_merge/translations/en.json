@@ -63,7 +63,7 @@
                     "show_show_end_date": "Show end date",
                     "show_summary": "Show summary",
                     "use_summary_as_entity_name": "Use summary as entity name",
-                    "format_language": "Language to usr for formatting date and time",
+                    "format_language": "Language to use for formatting date and time",
                     "md_header_template": "Header template for markdown text",
                     "md_item_template": "Item template for markdown text. Values = package_name, version and old_version. Use html tag 'br' for linebreak"
                 }
