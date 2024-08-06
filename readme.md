@@ -46,10 +46,10 @@ Or click
 
 It's possible to rotate between multiple Calendar events in the same card by using the [Carousel helper integration](https://github.com/kgn3400/carousel)
 
-## Services
+## Actions
 
-Available services: __toggle_show_as_time_to__
+Available actions: __toggle_show_as_time_to__
 
-### Service calendar_merge.toggle_show_as_time_to
+### action calendar_merge.toggle_show_as_time_to
 
 Toggle 'Show calendar event as time to' option.
