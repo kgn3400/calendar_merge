@@ -7,6 +7,8 @@
     }
   },
   "services": {
-    "reset": "mdi:close-circle-outline"
+    "toggle_show_as_time_to": {
+      "service": "mdi:toggle-switch"
+    }
   }
 }

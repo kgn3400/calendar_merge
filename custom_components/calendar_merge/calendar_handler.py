@@ -38,8 +38,8 @@ from .const import (
 # ------------------------------------------------------
 # ------------------------------------------------------
 @dataclass
-class CalendarEvent:
-    """Calendar event."""
+class CalendarMergeEvent:
+    """Calendar merge event."""
 
     def __init__(
         self,
@@ -64,7 +64,7 @@ class CalendarEvent:
         self.formatted_event_time: str = ""
         self.formatted_event: str = ""
 
-    def __eq__(self, other: CalendarEvent) -> bool:
+    def __eq__(self, other: CalendarMergeEvent) -> bool:
         """Eq."""
         return (
             self.calendar == other.calendar
@@ -93,7 +93,7 @@ class CalendarHandler:
         self.hass: HomeAssistant = hass
         self.entry: ConfigEntry = entry
         self.entry_options: dict[str, Any] = entry_options
-        self.events: list[CalendarEvent] = []
+        self.events: list[CalendarMergeEvent] = []
         self.language: str = self.entry_options.get(
             CONF_FORMAT_LANGUAGE, self.hass.config.language
         )
@@ -101,6 +101,7 @@ class CalendarHandler:
         self.last_error_template: str = ""
         self.last_error_txt_template: str = ""
         self.next_update: datetime = datetime.now()
+        self.supress_update_listener: bool = False
 
     # ------------------------------------------------------
     async def get_merge_calendar_events(
@@ -138,7 +139,7 @@ class CalendarHandler:
             for key in tmp_events:
                 for event in tmp_events[key]["events"]:
                     self.events.append(
-                        CalendarEvent(
+                        CalendarMergeEvent(
                             str(key)
                             .replace("calendar.", "")
                             .replace("_", " ")

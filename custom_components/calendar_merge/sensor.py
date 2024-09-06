@@ -168,6 +168,8 @@ class CalendarMergeSensor(SensorEntity, BaseCalendarMergeSensor):
     def update_settings(self) -> None:
         """Update config."""
 
+        self.calendar_handler.supress_update_listener = True
+
         self.hass.config_entries.async_update_entry(
             self.entry, data=self.entry_options, options=self.entry_options
         )

@@ -1,109 +1,109 @@
 {
-    "title": "Calendar merge",
-    "entity_component": {
-        "_": {
-            "name": "Calendar merge"
-        }
-    },
-    "config": {
-        "abort": {
-            "already_configured": "Device is already configured"
-        },
-        "error": {
-            "missing_selection": "No calendar selected",
-            "unknown": "Unexpected error"
-        },
-        "step": {
-            "user": {
-                "title": "Calendar merge helper",
-                "description": "The calendar merge helper allows you to create an overall overview for one or more calendars. For a certain number of days into the future and a maximum number of events.",
-                "data": {
-                    "name": "Sensor name",
-                    "days_ahead": "Get calendar events days ahead",
-                    "max_events": "Get max calendar events",
-                    "remove_recurring_events": "Remove recurring calendar events",
-                    "calender_entity_ids": "Calendars this sensor monitors"
-                }
-            },
-            "user_format": {
-                "title": "Calendar merge helper",
-                "data": {
-                    "show_event_as_time_to": "Show calendar event as time to",
-                    "show_show_end_date": "Show end date",
-                    "show_summary": "Show summary",
-                    "use_summary_as_entity_name": "Use summary as entity name",
-                    "format_language": "Language to usr for formatting date and time",
-                    "md_header_template": "Calendar header template for markdown text",
-                    "md_item_template": "Calendar event template for markdown text. Values = package_name, version and old_version. Use html tag 'br' for linebreak"
-                }
-            }
-        }
-    },
-    "options": {
-        "abort": {
-            "already_configured": "Device is already configured"
-        },
-        "error": {
-            "missing_selection": "No calendar selected",
-            "unknown": "Unexpected error"
-        },
-        "step": {
-            "init": {
-                "data": {
-                    "name": "Sensor name",
-                    "days_ahead": "Get calendar events days ahead",
-                    "max_events": "Get max calender events",
-                    "remove_recurring_events": "Remove recurring calendar events",
-                    "calender_entity_ids": "Calenders this sensor monitors"
-                }
-            },
-            "init_format": {
-                "data": {
-                    "show_event_as_time_to": "Show calendar event as time to",
-                    "show_show_end_date": "Show end date",
-                    "show_summary": "Show summary",
-                    "use_summary_as_entity_name": "Use summary as entity name",
-                    "format_language": "Language to use for formatting date and time",
-                    "md_header_template": "Header template for markdown text",
-                    "md_item_template": "Item template for markdown text. Values = package_name, version and old_version. Use html tag 'br' for linebreak"
-                }
-            }
-        }
-    },
-    "entity": {
-        "sensor": {
-            "calendar_merge": {
-                "state_attributes": {
-                    "events": {
-                        "name": "Events"
-                    },
-                    "markdown_text": {
-                        "name": "Markdown text"
-                    }
-                }
-            }
-        }
-    },
-    "issues": {
-        "missing_entity": {
-            "description": "It looks like either entity `{entity}` has been deleted or renamed, which are used in Calendar merge helper `{calendar_merge_helper}`. \n\n Please fix this problem.",
-            "title": "Calendar merge helper: Entity deleted or renamed"
-        },
-        "template_error": {
-            "description": "Rendering markdown template `{template}` in Calendar merge helper `{calendar_merge_helper}` ends in error.\nError: `{error_txt}` \n\n Please fix this problem.",
-            "title": "Calendar merge helper: Template error"
-        }
-    },
-    "services": {
-        "toggle_show_as_time_to": {
-            "description": "Toggle 'Show calendar event as time to' option. Choose the calendar events entity without postfix _event_x.",
-            "name": "Toggle 'Show calendar event as time to' option",
-            "fields": {
-                "save_settings": {
-                    "description": "Save settings option.",
-                    "name": "Save settings option"
-                }
-            }
-        }
+  "title": "Calendar merge",
+  "entity_component": {
+    "_": {
+      "name": "Calendar merge"
     }
+  },
+  "config": {
+    "abort": {
+      "already_configured": "Device is already configured"
+    },
+    "error": {
+      "missing_selection": "No calendar selected",
+      "unknown": "Unexpected error"
+    },
+    "step": {
+      "user": {
+        "title": "Calendar merge helper",
+        "description": "The calendar merge helper allows you to create an overall overview for one or more calendars. For a certain number of days into the future and a maximum number of events.",
+        "data": {
+          "name": "Sensor name",
+          "days_ahead": "Get calendar events days ahead",
+          "max_events": "Get max calendar events",
+          "remove_recurring_events": "Remove recurring calendar events",
+          "calender_entity_ids": "Calendars this sensor monitors"
+        }
+      },
+      "user_format": {
+        "title": "Calendar merge helper",
+        "data": {
+          "show_event_as_time_to": "Show calendar event as time to",
+          "show_show_end_date": "Show end date",
+          "show_summary": "Show summary",
+          "use_summary_as_entity_name": "Use summary as entity name",
+          "format_language": "Language to usr for formatting date and time",
+          "md_header_template": "Calendar header template for markdown text",
+          "md_item_template": "Calendar event template for markdown text. Values = package_name, version and old_version. Use html tag 'br' for linebreak"
+        }
+      }
+    }
+  },
+  "options": {
+    "abort": {
+      "already_configured": "Device is already configured"
+    },
+    "error": {
+      "missing_selection": "No calendar selected",
+      "unknown": "Unexpected error"
+    },
+    "step": {
+      "init": {
+        "data": {
+          "name": "Sensor name",
+          "days_ahead": "Get calendar events days ahead",
+          "max_events": "Get max calender events",
+          "remove_recurring_events": "Remove recurring calendar events",
+          "calender_entity_ids": "Calenders this sensor monitors"
+        }
+      },
+      "init_format": {
+        "data": {
+          "show_event_as_time_to": "Show calendar event as time to",
+          "show_show_end_date": "Show end date",
+          "show_summary": "Show summary",
+          "use_summary_as_entity_name": "Use summary as entity name",
+          "format_language": "Language to use for formatting date and time",
+          "md_header_template": "Header template for markdown text",
+          "md_item_template": "Item template for markdown text. Values = package_name, version and old_version. Use html tag 'br' for linebreak"
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "calendar_merge": {
+        "state_attributes": {
+          "events": {
+            "name": "Events"
+          },
+          "markdown_text": {
+            "name": "Markdown text"
+          }
+        }
+      }
+    }
+  },
+  "issues": {
+    "missing_entity": {
+      "description": "It looks like either entity `{entity}` has been deleted or renamed, which are used in Calendar merge helper `{calendar_merge_helper}`. \n\n Please fix this problem.",
+      "title": "Calendar merge helper: Entity deleted or renamed"
+    },
+    "template_error": {
+      "description": "Rendering markdown template `{template}` in Calendar merge helper `{calendar_merge_helper}` ends in error.\nError: `{error_txt}` \n\n Please fix this problem.",
+      "title": "Calendar merge helper: Template error"
+    }
+  },
+  "services": {
+    "toggle_show_as_time_to": {
+      "description": "Toggle 'Show calendar event as time to' option. Choose the calendar events entity without postfix _event_x.",
+      "name": "Toggle 'Show calendar event as time to' option",
+      "fields": {
+        "save_settings": {
+          "description": "Save settings option.",
+          "name": "Save settings option"
+        }
+      }
+    }
+  }
 }
