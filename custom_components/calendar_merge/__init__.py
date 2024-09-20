@@ -16,7 +16,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up State updates from a config entry."""
 
     calendar_handler: CalendarHandler = CalendarHandler(
-        hass, entry, entry.options.copy()
+        hass,
+        entry,
     )
 
     coordinator: DataUpdateCoordinator = DataUpdateCoordinator(

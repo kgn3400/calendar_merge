@@ -50,7 +50,7 @@ async def async_setup_entry(
     )
 
     if len(calendar_entities) > 0:
-        entry_options: dict[str, Any] = entry.options.copy()
+        # entry_options: dict[str, Any] = entry.options.copy()
 
         tt: list[BaseCalendarMergeSensor] = []
 
@@ -58,7 +58,6 @@ async def async_setup_entry(
             CalendarMergeEventsSensor(
                 hass,
                 entry,
-                entry_options,
                 calendar_entities,
                 x,
             )
@@ -69,7 +68,6 @@ async def async_setup_entry(
             CalendarMergeSensor(
                 hass,
                 entry,
-                entry_options,
                 calendar_entities,
                 tt,
             ),
@@ -83,8 +81,6 @@ async def async_setup_entry(
 # ------------------------------------------------------
 class BaseCalendarMergeSensor:
     """Base sensor class for calendar events."""
-
-    entry_options: dict[str, Any] = {}
 
     # ------------------------------------------------------
     async def async_refresh(self) -> None:
@@ -105,7 +101,6 @@ class CalendarMergeSensor(SensorEntity, BaseCalendarMergeSensor):
         self,
         hass: HomeAssistant,
         entry: ConfigEntry,
-        entry_options: dict[str, Any],
         calendar_entities: list[str],
         events_sensors: list[BaseCalendarMergeSensor],
     ) -> None:
@@ -113,14 +108,13 @@ class CalendarMergeSensor(SensorEntity, BaseCalendarMergeSensor):
 
         self.hass: HomeAssistant = hass
         self.entry: ConfigEntry = entry
-        self.entry_options = entry_options
 
         self.calendar_entities: list[str] = calendar_entities
         self.events_sensors: list[CalendarMergeEventsSensor] = events_sensors
 
         self.translation_key = TRANSLATION_KEY
         self.markdown_text: str = ""
-        self.events_json: dict = {}
+        self.events_dict: dict = {}
 
         self.coordinator: DataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id][
             "coordinator"
@@ -155,37 +149,37 @@ class CalendarMergeSensor(SensorEntity, BaseCalendarMergeSensor):
     async def async_toggle_show_as_time_to(self, service_data: ServiceCall) -> None:
         """Toggle show time as time to."""
 
-        self.entry_options[CONF_SHOW_EVENT_AS_TIME_TO] = not self.entry_options.get(
+        tmp_entry_options: dict[str, Any] = self.entry.options.copy()
+
+        tmp_entry_options[CONF_SHOW_EVENT_AS_TIME_TO] = not self.entry.options.get(
             CONF_SHOW_EVENT_AS_TIME_TO, False
         )
 
         if service_data.data.get(SERVICE_SAVE_SETTINGS, False):
-            self.update_settings()
+            self.update_settings(tmp_entry_options)
 
         await self.coordinator.async_refresh()
 
     # ------------------------------------------------------------------
-    def update_settings(self) -> None:
+    def update_settings(self, entry_options: dict[str, Any]) -> None:
         """Update config."""
 
         self.calendar_handler.supress_update_listener = True
 
         self.hass.config_entries.async_update_entry(
-            self.entry, data=self.entry_options, options=self.entry_options
+            self.entry, data=entry_options, options=entry_options
         )
 
     # ------------------------------------------------------------------
     async def async_refresh(self) -> None:
         """Refresh."""
-        await self.calendar_handler.get_merge_calendar_events(
-            self.calendar_entities, True
-        )
+        await self.calendar_handler.merge_calendar_events(self.calendar_entities, True)
 
         for event_sensor in self.events_sensors:
             await event_sensor.async_refresh()
 
         self.markdown_text = self.calendar_handler.create_markdown()
-        self.events_json = self.calendar_handler.get_events_to_att()
+        self.events_dict = self.calendar_handler.get_events_to_att()
 
     # ------------------------------------------------------
     async def async_will_remove_from_hass(self) -> None:
@@ -210,9 +204,7 @@ class CalendarMergeSensor(SensorEntity, BaseCalendarMergeSensor):
     async def async_hass_started(self, _event: Event) -> None:
         """Hass started."""
 
-        await self.calendar_handler.get_merge_calendar_events(
-            self.calendar_entities, True
-        )
+        await self.calendar_handler.merge_calendar_events(self.calendar_entities, True)
         self.async_schedule_update_ha_state()
         await self.coordinator.async_refresh()
 
@@ -262,7 +254,7 @@ class CalendarMergeSensor(SensorEntity, BaseCalendarMergeSensor):
         """
 
         attr: dict = {}
-        attr["events"] = self.events_json
+        attr["events"] = self.events_dict
         attr["markdown_text"] = self.markdown_text
         return attr
 
@@ -336,7 +328,6 @@ class CalendarMergeEventsSensor(SensorEntity, BaseCalendarMergeSensor):
         self,
         hass: HomeAssistant,
         entry: ConfigEntry,
-        entry_options: dict[str, Any],
         calendar_entities: list[str],
         event_num: int = 0,
     ) -> None:
@@ -344,7 +335,6 @@ class CalendarMergeEventsSensor(SensorEntity, BaseCalendarMergeSensor):
 
         self.hass: HomeAssistant = hass
         self.entry: ConfigEntry = entry
-        self.entry_options = entry_options
 
         self.calendar_entities: list[str] = calendar_entities
         self.calendar_handler: CalendarHandler = hass.data[DOMAIN][entry.entry_id][
@@ -397,7 +387,7 @@ class CalendarMergeEventsSensor(SensorEntity, BaseCalendarMergeSensor):
 
         """
 
-        if self.entry_options.get(
+        if self.entry.options.get(
             CONF_USE_SUMMARY_AS_ENTITY_NAME, False
         ) and self.event_num < len(self.calendar_handler.events):
             return self.calendar_handler.events[self.event_num].summary
@@ -425,9 +415,7 @@ class CalendarMergeEventsSensor(SensorEntity, BaseCalendarMergeSensor):
 
         """
 
-        attr: dict = {}
-
-        return attr
+        return {}
 
     # ------------------------------------------------------
     @property

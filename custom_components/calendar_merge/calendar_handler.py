@@ -44,21 +44,24 @@ class CalendarAttrEvent:
 
     def __init__(
         self,
-        calendar: str,
-        start: datetime | date | str,
-        end: datetime | date | str,
-        summary: str,
-        description: str | None = None,
-        location: str | None = None,
+        calender_merge_event: CalendarMergeEvent,
     ) -> None:
         """Init."""
 
-        self.calendar: str = calendar
-        self.start: datetime | date = start
-        self.end: datetime | date = end
-        self.summary: str = summary
-        self.description: str | None = description if description is not None else ""
-        self.location: str | None = location if location is not None else ""
+        self.calendar: str = calender_merge_event.calendar
+        self.start: datetime | date = calender_merge_event.start
+        self.end: datetime | date = calender_merge_event.end
+        self.summary: str = calender_merge_event.summary
+        self.description: str | None = (
+            calender_merge_event.description
+            if calender_merge_event.description is not None
+            else ""
+        )
+        self.location: str | None = (
+            calender_merge_event.location
+            if calender_merge_event.location is not None
+            else ""
+        )
 
 
 # ------------------------------------------------------
@@ -67,6 +70,7 @@ class CalendarAttrEvent:
 class CalendarMergeEvent(CalendarEvent):
     """Calendar merge event."""
 
+    # ------------------------------------------------------
     def __init__(
         self,
         calendar: str,
@@ -123,6 +127,14 @@ class CalendarMergeEvent(CalendarEvent):
         self.formatted_event: str = ""
         super().__post_init__()
 
+    # ------------------------------------------------------
+    def as_calender_event(self) -> CalendarEvent:
+        """As calendar event parms."""
+        return CalendarEvent(
+            self.start, self.end, self.summary, self.description, self.location
+        )
+
+    # ------------------------------------------------------
     def __eq__(self, other: CalendarMergeEvent) -> bool:
         """Eq."""
         return (
@@ -145,15 +157,13 @@ class CalendarHandler:
         self,
         hass: HomeAssistant,
         entry: ConfigEntry,
-        entry_options: dict[str, Any],
     ) -> None:
         """Init."""
 
         self.hass: HomeAssistant = hass
         self.entry: ConfigEntry = entry
-        self.entry_options: dict[str, Any] = entry_options
         self.events: list[CalendarMergeEvent] = []
-        self.language: str = self.entry_options.get(
+        self.language: str = self.entry.options.get(
             CONF_FORMAT_LANGUAGE, self.hass.config.language
         )
 
@@ -163,7 +173,7 @@ class CalendarHandler:
         self.supress_update_listener: bool = False
 
     # ------------------------------------------------------
-    async def get_merge_calendar_events(
+    async def merge_calendar_events(
         self,
         calendar_entities: list[str],
         force_update: bool = False,
@@ -182,7 +192,7 @@ class CalendarHandler:
                         "end_date_time": (
                             dt_util.now()
                             + timedelta(
-                                days=self.entry_options.get(CONF_DAYS_AHEAD, 30)
+                                days=self.entry.options.get(CONF_DAYS_AHEAD, 30)
                             )
                         ).isoformat(),
                         "start_date_time": dt_util.now().isoformat(),
@@ -211,11 +221,11 @@ class CalendarHandler:
                         )
                     )
 
-            if self.entry_options.get(CONF_REMOVE_RECURRING_EVENTS, True):
+            if self.entry.options.get(CONF_REMOVE_RECURRING_EVENTS, True):
                 self.remove_recurring_events()
 
             self.events.sort(key=lambda x: x.start_datetime_local.isoformat())
-            self.events = self.events[: int(self.entry_options.get(CONF_MAX_EVENTS, 5))]
+            self.events = self.events[: int(self.entry.options.get(CONF_MAX_EVENTS, 5))]
             self.next_update = datetime.now() + timedelta(minutes=5)
 
     # ------------------------------------------------------
@@ -293,7 +303,7 @@ class CalendarHandler:
                     get_locale(self.language).timeframes.get("now", "now").capitalize()
                 )
 
-            elif self.entry_options.get(CONF_SHOW_EVENT_AS_TIME_TO, False):
+            elif self.entry.options.get(CONF_SHOW_EVENT_AS_TIME_TO, False):
                 formatted_event_str: str = await self.hass.async_add_executor_job(
                     partial(
                         format_timedelta,
@@ -306,7 +316,7 @@ class CalendarHandler:
             else:
                 formatted_event_str = tmp_event.formatted_start
                 if (
-                    self.entry_options.get(CONF_SHOW_END_DATE, False)
+                    self.entry.options.get(CONF_SHOW_END_DATE, False)
                     and not tmp_event.all_day
                 ):
                     formatted_event_str = (
@@ -315,7 +325,7 @@ class CalendarHandler:
 
             tmp_event.formatted_event_time = formatted_event_str
 
-            if self.entry_options.get(CONF_SHOW_SUMMARY, False):
+            if self.entry.options.get(CONF_SHOW_SUMMARY, False):
                 formatted_event_str = tmp_event.summary + " : " + formatted_event_str
 
             tmp_event.formatted_event = formatted_event_str
@@ -339,9 +349,9 @@ class CalendarHandler:
             tmp_md: str = ""
             values: dict[str, Any] = {}
 
-            if self.entry_options.get(CONF_MD_HEADER_TEMPLATE, "") != "":
+            if self.entry.options.get(CONF_MD_HEADER_TEMPLATE, "") != "":
                 value_template: Template | None = Template(
-                    str(self.entry_options.get(CONF_MD_HEADER_TEMPLATE, "")),
+                    str(self.entry.options.get(CONF_MD_HEADER_TEMPLATE, "")),
                     self.hass,
                 )
 
@@ -349,7 +359,7 @@ class CalendarHandler:
 
             for item in self.events:
                 value_template: Template | None = Template(
-                    str(self.entry_options.get(CONF_MD_ITEM_TEMPLATE, "")),
+                    str(self.entry.options.get(CONF_MD_ITEM_TEMPLATE, "")),
                     self.hass,
                 )
                 values = {
@@ -384,12 +394,7 @@ class CalendarHandler:
     ) -> list[CalendarAttrEvent]:
         """Create list of events to attribute."""
 
-        return [
-            CalendarAttrEvent(
-                x.calendar, x.start, x.end, x.summary, x.description, x.location
-            )
-            for x in self.events
-        ]
+        return [CalendarAttrEvent(event) for event in self.events]
 
     # ------------------------------------------------------------------
     def create_issue_template(
