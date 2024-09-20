@@ -3,13 +3,14 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 from functools import partial
 from typing import Any
 
 from arrow.locales import get_locale
 from babel.dates import format_date, format_time, format_timedelta, get_datetime_format
 
+from homeassistant.components.calendar import CalendarEvent
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import ATTR_ENTITY_ID
 from homeassistant.core import HomeAssistant
@@ -38,31 +39,89 @@ from .const import (
 # ------------------------------------------------------
 # ------------------------------------------------------
 @dataclass
-class CalendarMergeEvent:
+class CalendarAttrEvent:
+    """Calendar attr event."""
+
+    def __init__(
+        self,
+        calendar: str,
+        start: datetime | date | str,
+        end: datetime | date | str,
+        summary: str,
+        description: str | None = None,
+        location: str | None = None,
+    ) -> None:
+        """Init."""
+
+        self.calendar: str = calendar
+        self.start: datetime | date = start
+        self.end: datetime | date = end
+        self.summary: str = summary
+        self.description: str | None = description if description is not None else ""
+        self.location: str | None = location if location is not None else ""
+
+
+# ------------------------------------------------------
+# ------------------------------------------------------
+@dataclass
+class CalendarMergeEvent(CalendarEvent):
     """Calendar merge event."""
 
     def __init__(
         self,
         calendar: str,
-        start: str,
-        end: str,
+        start: datetime | date | str,
+        end: datetime | date | str,
         summary: str,
-        description: str,
-        location: str,
+        description: str | None = None,
+        location: str | None = None,
     ) -> None:
-        "Init."
+        """Init."""
 
         self.calendar: str = calendar
-        self.start: str = start
-        self.end: str = end
-        self.all_day: bool = False
-        self.summary: str = summary
-        self.description: str = description
-        self.location: str = location
+
+        if isinstance(start, str):
+            if len(start) == 10:
+                tmp_start: date = date.fromisoformat(start)
+            else:
+                tmp_start: datetime = datetime.fromisoformat(start)
+        elif isinstance(start, date):
+            tmp_start: date = start
+        else:
+            tmp_start: datetime = start
+
+        if isinstance(end, str):
+            if len(end) == 10:
+                tmp_end: date = date.fromisoformat(end)
+            else:
+                tmp_end: datetime = datetime.fromisoformat(end)
+        elif isinstance(end, date):
+            tmp_end: date = end
+        else:
+            tmp_end: datetime = start
+
+        if isinstance(tmp_start, datetime):
+            super().__init__(
+                dt_util.as_local(tmp_start),
+                dt_util.as_local(tmp_end),
+                summary,
+                description,
+                location,
+            )
+        else:
+            super().__init__(
+                tmp_start,
+                tmp_end,
+                summary,
+                description,
+                location,
+            )
+
         self.formatted_start: str = ""
         self.formatted_end: str = ""
         self.formatted_event_time: str = ""
         self.formatted_event: str = ""
+        super().__post_init__()
 
     def __eq__(self, other: CalendarMergeEvent) -> bool:
         """Eq."""
@@ -155,7 +214,7 @@ class CalendarHandler:
             if self.entry_options.get(CONF_REMOVE_RECURRING_EVENTS, True):
                 self.remove_recurring_events()
 
-            self.events.sort(key=lambda x: x.start)
+            self.events.sort(key=lambda x: x.start_datetime_local.isoformat())
             self.events = self.events[: int(self.entry_options.get(CONF_MAX_EVENTS, 5))]
             self.next_update = datetime.now() + timedelta(minutes=5)
 
@@ -174,10 +233,9 @@ class CalendarHandler:
                     and self.events[index].summary == self.events[index2].summary
                     and self.events[index].description
                     == self.events[index2].description
-                    and datetime.fromisoformat(self.events[index].start).time()
-                    == datetime.fromisoformat(self.events[index2].start).time()
-                    and datetime.fromisoformat(self.events[index].end).time()
-                    == datetime.fromisoformat(self.events[index2].end).time()
+                    and self.events[index].start.time()
+                    == self.events[index2].start.time()
+                    and self.events[index].end.time() == self.events[index2].end.time()
                 ):
                     del self.events[index2]
             index += 1
@@ -185,8 +243,7 @@ class CalendarHandler:
     # ------------------------------------------------------
     async def async_format_datetime(
         self,
-        date_time: datetime,
-        date_only: bool = False,
+        date_time: datetime | date,
     ) -> str | None:
         """Format datetime."""
 
@@ -199,7 +256,7 @@ class CalendarHandler:
             )
         )
 
-        if date_only:
+        if isinstance(date_time, date):
             return date_str
 
         dt_format = await self.hass.async_add_executor_job(
@@ -223,29 +280,13 @@ class CalendarHandler:
 
         if event_num < len(self.events):
             tmp_event = self.events[event_num]
-            start_date: datetime = datetime.fromisoformat(tmp_event.start)
-            start_date_next: datetime = start_date + timedelta(days=1)
-            end_date: datetime = datetime.fromisoformat(tmp_event.end)
 
-            if (
-                start_date_next == end_date
-                and start_date.hour == 0
-                and start_date.minute == 0
-                and end_date.hour == 0
-                and end_date.minute == 0
-            ):
-                tmp_event.all_day = True
-                tmp_event.formatted_start = await self.async_format_datetime(
-                    start_date, date_only=True
-                )
-                tmp_event.formatted_end = await self.async_format_datetime(
-                    end_date, date_only=True
-                )
-            else:
-                tmp_event.formatted_start = await self.async_format_datetime(start_date)
-                tmp_event.formatted_end = await self.async_format_datetime(end_date)
+            tmp_event.formatted_start = await self.async_format_datetime(
+                tmp_event.start
+            )
+            tmp_event.formatted_end = await self.async_format_datetime(tmp_event.end)
 
-            diff: timedelta = start_date - datetime.now(start_date.tzinfo)
+            diff: timedelta = tmp_event.start_datetime_local - dt_util.now()
 
             if tmp_event.all_day and diff.total_seconds() < 0:
                 formatted_event_str: str = (
@@ -313,8 +354,8 @@ class CalendarHandler:
                 )
                 values = {
                     "calendar": replace_markdown_tags(item.calendar),
-                    "start": replace_markdown_tags(item.start),
-                    "end": replace_markdown_tags(item.end),
+                    "start": replace_markdown_tags(item.start.isoformat()),
+                    "end": replace_markdown_tags(item.end.isoformat()),
                     "all_day": item.all_day,
                     "summary": replace_markdown_tags(item.summary),
                     "description": replace_markdown_tags(item.description),
@@ -336,6 +377,19 @@ class CalendarHandler:
             )
 
         return tmp_md
+
+    # ------------------------------------------------------------------
+    def get_events_to_att(
+        self,
+    ) -> list[CalendarAttrEvent]:
+        """Create list of events to attribute."""
+
+        return [
+            CalendarAttrEvent(
+                x.calendar, x.start, x.end, x.summary, x.description, x.location
+            )
+            for x in self.events
+        ]
 
     # ------------------------------------------------------------------
     def create_issue_template(

@@ -185,7 +185,7 @@ class CalendarMergeSensor(SensorEntity, BaseCalendarMergeSensor):
             await event_sensor.async_refresh()
 
         self.markdown_text = self.calendar_handler.create_markdown()
-        self.events_json = self.calendar_handler.events
+        self.events_json = self.calendar_handler.get_events_to_att()
 
     # ------------------------------------------------------
     async def async_will_remove_from_hass(self) -> None:

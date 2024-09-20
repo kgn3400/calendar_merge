@@ -2,15 +2,15 @@
 
 from __future__ import annotations
 
-import datetime
+from datetime import datetime
 
 from homeassistant.components.calendar import CalendarEntity, CalendarEvent
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
-from homeassistant.util import dt as dt_util
 
+# from homeassistant.util import dt as dt_util
 from .calendar_handler import CalendarHandler
 from .const import DOMAIN
 
@@ -87,56 +87,31 @@ class EventsCalendar(CalendarEntity):
 
         event = self.calendar_handler.events[0]
 
-        if event.all_day:
-            self._event = CalendarEvent(
-                summary=event.summary,
-                description=event.description,
-                location=event.location,
-                start=datetime.date.fromisoformat(event.start),
-                end=datetime.date.fromisoformat(event.end),
-            )
-
-        else:
-            self._event = CalendarEvent(
-                summary=event.summary,
-                description=event.description,
-                location=event.location,
-                start=dt_util.as_local(datetime.datetime.fromisoformat(event.start)),
-                end=dt_util.as_local(datetime.datetime.fromisoformat(event.end)),
-            )
+        self._event = CalendarEvent(
+            start=event.start,
+            end=event.end,
+            summary=event.summary,
+            description=event.description,
+            location=event.location,
+        )
 
         return self._event
-
-    # # ------------------------------------------------------
-    # @callback
-    # def async_write_ha_state(self) -> None:
-    #     """Write the state to the state machine."""
-
-    #     LOGGER.debug("async_write_ha_state starting")
-
-    #     if self.calendar_handler.events != self.tmp_calendar_event:
-    #         LOGGER.debug("async_write_ha_state writing")
-    #         self.tmp_calendar_event = self.calendar_handler.events.copy()
-    #         super().async_write_ha_state()
 
     # ------------------------------------------------------
     async def async_get_events(
         self,
         hass: HomeAssistant,
-        start_date: datetime.datetime,
-        end_date: datetime.datetime,
+        start_date: datetime,
+        end_date: datetime,
     ) -> list[CalendarEvent]:
         """Return calendar events within a datetime range."""
 
         events: list[CalendarEvent] = []
 
         for tmp_event in self.calendar_handler.events:
-            check_start: datetime.datetime = datetime.datetime.fromisoformat(
-                tmp_event.start
-            ).replace(tzinfo=start_date.tzinfo)
-            check_end: datetime.datetime = datetime.datetime.fromisoformat(
-                tmp_event.end
-            ).replace(tzinfo=start_date.tzinfo)
+            check_start: datetime = tmp_event.start_datetime_local
+
+            check_end: datetime = tmp_event.end_datetime_local
 
             if (
                 start_date <= check_start < end_date
@@ -144,30 +119,15 @@ class EventsCalendar(CalendarEntity):
                 or check_start <= start_date < check_end
                 or check_start < end_date <= check_end
             ):
-                if tmp_event.all_day:
-                    events.append(
-                        CalendarEvent(
-                            summary=tmp_event.summary,
-                            description=tmp_event.description,
-                            location=tmp_event.location,
-                            start=datetime.date.fromisoformat(tmp_event.start),
-                            end=datetime.date.fromisoformat(tmp_event.end),
-                        )
+                events.append(
+                    CalendarEvent(
+                        start=tmp_event.start,
+                        end=tmp_event.end,
+                        summary=tmp_event.summary,
+                        description=tmp_event.description,
+                        location=tmp_event.location,
                     )
-                else:
-                    events.append(
-                        CalendarEvent(
-                            summary=tmp_event.summary,
-                            description=tmp_event.description,
-                            location=tmp_event.location,
-                            start=dt_util.as_local(
-                                datetime.datetime.fromisoformat(tmp_event.start)
-                            ),
-                            end=dt_util.as_local(
-                                datetime.datetime.fromisoformat(tmp_event.end)
-                            ),
-                        )
-                    )
+                )
         return events
 
     # ------------------------------------------------------
