@@ -13,13 +13,14 @@ from babel.dates import format_date, format_time, format_timedelta, get_datetime
 from homeassistant.components.calendar import CalendarEvent
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import ATTR_ENTITY_ID
-from homeassistant.core import HomeAssistant
+from homeassistant.core import HomeAssistant, State
 from homeassistant.exceptions import TemplateError
-from homeassistant.helpers import issue_registry as ir
+from homeassistant.helpers import entity_registry as er, issue_registry as ir
 from homeassistant.helpers.template import Template
 from homeassistant.util import dt as dt_util
 
 from .const import (
+    CONF_CALENDAR_ENTITY_IDS,
     CONF_DAYS_AHEAD,
     CONF_FORMAT_LANGUAGE,
     CONF_MAX_EVENTS,
@@ -32,6 +33,7 @@ from .const import (
     DOMAIN,
     DOMAIN_NAME,
     LOGGER,
+    TRANSLATION_KEY_MISSING_ENTITY,
     TRANSLATION_KEY_TEMPLATE_ERROR,
 )
 
@@ -167,66 +169,68 @@ class CalendarHandler:
             CONF_FORMAT_LANGUAGE, self.hass.config.language
         )
 
+        registry = er.async_get(hass)
+        self.calendar_entities: list[str] = er.async_validate_entity_ids(
+            registry, entry.options[CONF_CALENDAR_ENTITY_IDS]
+        )
+
         self.last_error_template: str = ""
         self.last_error_txt_template: str = ""
-        self.next_update: datetime = datetime.now()
         self.supress_update_listener: bool = False
+
+        self.show_event_as_time_to: bool = entry.options.get(
+            CONF_SHOW_EVENT_AS_TIME_TO, False
+        )
 
     # ------------------------------------------------------
     async def merge_calendar_events(
         self,
-        calendar_entities: list[str],
-        force_update: bool = False,
     ) -> None:
-        """Process calendar events."""
+        """Merge calendar events."""
 
-        if force_update or self.next_update < datetime.now():
-            self.events = []
+        self.events = []
 
-            try:
-                tmp_events: dict = await self.hass.services.async_call(
-                    "calendar",
-                    "get_events",
-                    service_data={
-                        ATTR_ENTITY_ID: calendar_entities,
-                        "end_date_time": (
-                            dt_util.now()
-                            + timedelta(
-                                days=self.entry.options.get(CONF_DAYS_AHEAD, 30)
-                            )
-                        ).isoformat(),
-                        "start_date_time": dt_util.now().isoformat(),
-                    },
-                    blocking=True,
-                    return_response=True,
-                )
-            # except (ServiceValidationError, ServiceNotFound, vol.Invalid) as err:
-            except Exception as err:  # noqa: BLE001
-                LOGGER.error(err)
-                return
+        try:
+            tmp_events: dict = await self.hass.services.async_call(
+                "calendar",
+                "get_events",
+                service_data={
+                    ATTR_ENTITY_ID: self.calendar_entities,
+                    "end_date_time": (
+                        dt_util.now()
+                        + timedelta(days=self.entry.options.get(CONF_DAYS_AHEAD, 30))
+                    ).isoformat(),
+                    "start_date_time": dt_util.now().isoformat(),
+                },
+                blocking=True,
+                return_response=True,
+            )
+        # except (ServiceValidationError, ServiceNotFound, vol.Invalid) as err:
+        except Exception as err:  # noqa: BLE001
+            LOGGER.error(err)
+            return
 
-            for key in tmp_events:
-                for event in tmp_events[key]["events"]:
-                    self.events.append(
-                        CalendarMergeEvent(
-                            str(key)
-                            .replace("calendar.", "")
-                            .replace("_", " ")
-                            .capitalize(),
-                            event["start"],
-                            event["end"],
-                            event.get("summary", ""),
-                            event.get("description", ""),
-                            event.get("location", ""),
-                        )
+        for key in tmp_events:
+            for event in tmp_events[key]["events"]:
+                self.events.append(
+                    CalendarMergeEvent(
+                        str(key)
+                        .replace("calendar.", "")
+                        .replace("_", " ")
+                        .capitalize(),
+                        event["start"],
+                        event["end"],
+                        event.get("summary", ""),
+                        event.get("description", ""),
+                        event.get("location", ""),
                     )
+                )
 
-            if self.entry.options.get(CONF_REMOVE_RECURRING_EVENTS, True):
-                self.remove_recurring_events()
+        if self.entry.options.get(CONF_REMOVE_RECURRING_EVENTS, True):
+            self.remove_recurring_events()
 
-            self.events.sort(key=lambda x: x.start_datetime_local.isoformat())
-            self.events = self.events[: int(self.entry.options.get(CONF_MAX_EVENTS, 5))]
-            self.next_update = datetime.now() + timedelta(minutes=5)
+        self.events.sort(key=lambda x: x.start_datetime_local.isoformat())
+        self.events = self.events[: int(self.entry.options.get(CONF_MAX_EVENTS, 5))]
 
     # ------------------------------------------------------
     def remove_recurring_events(self) -> None:
@@ -303,7 +307,7 @@ class CalendarHandler:
                     get_locale(self.language).timeframes.get("now", "now").capitalize()
                 )
 
-            elif self.entry.options.get(CONF_SHOW_EVENT_AS_TIME_TO, False):
+            elif self.show_event_as_time_to:
                 formatted_event_str: str = await self.hass.async_add_executor_job(
                     partial(
                         format_timedelta,
@@ -427,3 +431,25 @@ class CalendarHandler:
             )
             self.last_error_template = template
             self.last_error_txt_template = error_txt
+
+    # ------------------------------------------------------
+    async def async_verify_calendar_entities_exist(self) -> bool:
+        """Verify calendar entities exist."""
+        res: bool = True
+
+        for index, calendar_entity in reversed(list(enumerate(self.calendar_entities))):
+            state: State | None = self.hass.states.get(calendar_entity)
+
+            if state is None:
+                self.create_issue(
+                    calendar_entity,
+                    TRANSLATION_KEY_MISSING_ENTITY,
+                    {
+                        "entity": calendar_entity,
+                        "calendar_merge_helper": calendar_entity,
+                    },
+                )
+                del self.calendar_entities[index]
+                res = False
+
+        return res

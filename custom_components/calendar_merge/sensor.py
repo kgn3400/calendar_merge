@@ -11,7 +11,7 @@ import voluptuous as vol
 from homeassistant.components.fan import FanEntityFeature
 from homeassistant.components.sensor import SensorEntity
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.core import Event, HomeAssistant, ServiceCall, State
+from homeassistant.core import Event, HomeAssistant, ServiceCall
 from homeassistant.helpers import (
     config_validation as cv,
     entity_platform,
@@ -32,7 +32,6 @@ from .const import (
     DOMAIN_NAME,
     SERVICE_SAVE_SETTINGS,
     TRANSLATION_KEY,
-    TRANSLATION_KEY_MISSING_ENTITY,
 )
 
 
@@ -58,7 +57,6 @@ async def async_setup_entry(
             CalendarMergeEventsSensor(
                 hass,
                 entry,
-                calendar_entities,
                 x,
             )
             for x in range(int(entry.options.get(CONF_MAX_EVENTS, 5)))
@@ -149,13 +147,15 @@ class CalendarMergeSensor(SensorEntity, BaseCalendarMergeSensor):
     async def async_toggle_show_as_time_to(self, service_data: ServiceCall) -> None:
         """Toggle show time as time to."""
 
-        tmp_entry_options: dict[str, Any] = self.entry.options.copy()
-
-        tmp_entry_options[CONF_SHOW_EVENT_AS_TIME_TO] = not self.entry.options.get(
-            CONF_SHOW_EVENT_AS_TIME_TO, False
+        self.calendar_handler.show_event_as_time_to = (
+            not self.calendar_handler.show_event_as_time_to
         )
 
         if service_data.data.get(SERVICE_SAVE_SETTINGS, False):
+            tmp_entry_options: dict[str, Any] = self.entry.options.copy()
+            tmp_entry_options[CONF_SHOW_EVENT_AS_TIME_TO] = (
+                self.calendar_handler.show_event_as_time_to
+            )
             self.update_settings(tmp_entry_options)
 
         await self.coordinator.async_refresh()
@@ -173,7 +173,7 @@ class CalendarMergeSensor(SensorEntity, BaseCalendarMergeSensor):
     # ------------------------------------------------------------------
     async def async_refresh(self) -> None:
         """Refresh."""
-        await self.calendar_handler.merge_calendar_events(self.calendar_entities, True)
+        await self.calendar_handler.merge_calendar_events()
 
         for event_sensor in self.events_sensors:
             await event_sensor.async_refresh()
@@ -204,7 +204,8 @@ class CalendarMergeSensor(SensorEntity, BaseCalendarMergeSensor):
     async def async_hass_started(self, _event: Event) -> None:
         """Hass started."""
 
-        await self.calendar_handler.merge_calendar_events(self.calendar_entities, True)
+        await self.calendar_handler.async_verify_calendar_entities_exist()
+        await self.calendar_handler.merge_calendar_events()
         self.async_schedule_update_ha_state()
         await self.coordinator.async_refresh()
 
@@ -295,27 +296,27 @@ class CalendarMergeSensor(SensorEntity, BaseCalendarMergeSensor):
             translation_placeholders=translation_placeholders,
         )
 
-    # ------------------------------------------------------
-    async def async_verify_calendar_entities_exist(self) -> bool:
-        """Verify calendar entities exist."""
-        res: bool = True
+    # # ------------------------------------------------------
+    # async def async_verify_calendar_entities_exist(self) -> bool:
+    #     """Verify calendar entities exist."""
+    #     res: bool = True
 
-        for index, calendar_entity in reversed(list(enumerate(self.calendar_entities))):
-            state: State | None = self.hass.states.get(calendar_entity)
+    #     for index, calendar_entity in reversed(list(enumerate(self.calendar_entities))):
+    #         state: State | None = self.hass.states.get(calendar_entity)
 
-            if state is None:
-                self.create_issue(
-                    calendar_entity,
-                    TRANSLATION_KEY_MISSING_ENTITY,
-                    {
-                        "entity": calendar_entity,
-                        "calendar_merge_helper": self.entity_id,
-                    },
-                )
-                del self.calendar_entities[index]
-                res = False
+    #         if state is None:
+    #             self.create_issue(
+    #                 calendar_entity,
+    #                 TRANSLATION_KEY_MISSING_ENTITY,
+    #                 {
+    #                     "entity": calendar_entity,
+    #                     "calendar_merge_helper": self.entity_id,
+    #                 },
+    #             )
+    #             del self.calendar_entities[index]
+    #             res = False
 
-        return res
+    #     return res
 
 
 # ------------------------------------------------------
@@ -328,7 +329,6 @@ class CalendarMergeEventsSensor(SensorEntity, BaseCalendarMergeSensor):
         self,
         hass: HomeAssistant,
         entry: ConfigEntry,
-        calendar_entities: list[str],
         event_num: int = 0,
     ) -> None:
         """Calendar merge events sensor."""
@@ -336,7 +336,6 @@ class CalendarMergeEventsSensor(SensorEntity, BaseCalendarMergeSensor):
         self.hass: HomeAssistant = hass
         self.entry: ConfigEntry = entry
 
-        self.calendar_entities: list[str] = calendar_entities
         self.calendar_handler: CalendarHandler = hass.data[DOMAIN][entry.entry_id][
             "calendar_handler"
         ]
