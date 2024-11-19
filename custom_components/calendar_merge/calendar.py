@@ -5,19 +5,18 @@ from __future__ import annotations
 from datetime import datetime
 
 from homeassistant.components.calendar import CalendarEntity, CalendarEvent
-from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 
+from . import CommonConfigEntry
 from .calendar_handler import CalendarHandler
-from .const import DOMAIN
 
 
 # ------------------------------------------------------
 async def async_setup_entry(
     hass: HomeAssistant,
-    config_entry: ConfigEntry,
+    config_entry: CommonConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     """Set up calendar items based on a config entry."""
@@ -36,20 +35,16 @@ class EventsCalendar(CalendarEntity):
     def __init__(
         self,
         hass: HomeAssistant,
-        entry: ConfigEntry,
+        entry: CommonConfigEntry,
     ) -> None:
         """Initialize a Calendar events."""
 
         self.hass: HomeAssistant = hass
-        self.entry: ConfigEntry = entry
+        self.entry: CommonConfigEntry = entry
         # self._event: CalendarEvent | None = None
 
-        self.coordinator: DataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id][
-            "coordinator"
-        ]
-        self.calendar_handler: CalendarHandler = hass.data[DOMAIN][entry.entry_id][
-            "calendar_handler"
-        ]
+        self.coordinator: DataUpdateCoordinator = entry.runtime_data.coordinator
+        self.calendar_handler: CalendarHandler = entry.runtime_data.calendar_handler
 
     # ------------------------------------------------------
     @property

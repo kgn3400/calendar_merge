@@ -10,7 +10,6 @@ import voluptuous as vol
 
 from homeassistant.components.fan import FanEntityFeature
 from homeassistant.components.sensor import SensorEntity
-from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import Event, HomeAssistant, ServiceCall
 from homeassistant.helpers import (
     config_validation as cv,
@@ -22,6 +21,7 @@ from homeassistant.helpers import (
 from homeassistant.helpers.entity_platform import AddEntitiesCallback, EntityPlatform
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 
+from . import CommonConfigEntry
 from .calendar_handler import CalendarHandler
 from .const import (
     CONF_CALENDAR_ENTITY_IDS,
@@ -38,7 +38,7 @@ from .const import (
 # ------------------------------------------------------
 async def async_setup_entry(
     hass: HomeAssistant,
-    entry: ConfigEntry,
+    entry: CommonConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     """Sensor setup."""
@@ -98,14 +98,14 @@ class CalendarMergeSensor(SensorEntity, BaseCalendarMergeSensor):
     def __init__(
         self,
         hass: HomeAssistant,
-        entry: ConfigEntry,
+        entry: CommonConfigEntry,
         calendar_entities: list[str],
         events_sensors: list[BaseCalendarMergeSensor],
     ) -> None:
         """Calendar merge sensor."""
 
         self.hass: HomeAssistant = hass
-        self.entry: ConfigEntry = entry
+        self.entry: CommonConfigEntry = entry
 
         self.calendar_entities: list[str] = calendar_entities
         self.events_sensors: list[CalendarMergeEventsSensor] = events_sensors
@@ -114,12 +114,8 @@ class CalendarMergeSensor(SensorEntity, BaseCalendarMergeSensor):
         self.markdown_text: str = ""
         self.events_dict: dict = {}
 
-        self.coordinator: DataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id][
-            "coordinator"
-        ]
-        self.calendar_handler: CalendarHandler = hass.data[DOMAIN][entry.entry_id][
-            "calendar_handler"
-        ]
+        self.coordinator: DataUpdateCoordinator = entry.runtime_data.coordinator
+        self.calendar_handler: CalendarHandler = entry.runtime_data.calendar_handler
 
         self.coordinator.update_method = self.async_refresh
         self.coordinator.update_interval = timedelta(minutes=5)
@@ -328,17 +324,15 @@ class CalendarMergeEventsSensor(SensorEntity, BaseCalendarMergeSensor):
     def __init__(
         self,
         hass: HomeAssistant,
-        entry: ConfigEntry,
+        entry: CommonConfigEntry,
         event_num: int = 0,
     ) -> None:
         """Calendar merge events sensor."""
 
         self.hass: HomeAssistant = hass
-        self.entry: ConfigEntry = entry
+        self.entry: CommonConfigEntry = entry
 
-        self.calendar_handler: CalendarHandler = hass.data[DOMAIN][entry.entry_id][
-            "calendar_handler"
-        ]
+        self.calendar_handler: CalendarHandler = entry.runtime_data.calendar_handler
 
         self.event_num = event_num
 
