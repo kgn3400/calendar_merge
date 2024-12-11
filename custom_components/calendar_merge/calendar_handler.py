@@ -33,7 +33,7 @@ from .const import (
     DOMAIN,
     DOMAIN_NAME,
     LOGGER,
-    TRANSLATION_KEY_MISSING_ENTITY,
+    TRANSLATION_KEY_MISSING_CALENDER,
     TRANSLATION_KEY_TEMPLATE_ERROR,
 )
 
@@ -169,6 +169,7 @@ class CalendarHandler:
             CONF_FORMAT_LANGUAGE, self.hass.config.language
         )
 
+        self.entity_id: str = ""
         registry = er.async_get(hass)
         self.calendar_entities: list[str] = er.async_validate_entity_ids(
             registry, entry.options[CONF_CALENDAR_ENTITY_IDS]
@@ -432,6 +433,25 @@ class CalendarHandler:
             self.last_error_template = template
             self.last_error_txt_template = error_txt
 
+    # ------------------------------------------------------------------
+    def create_issue(
+        self,
+        translation_key: str,
+        translation_placeholders: dict,
+    ) -> None:
+        """Create issue on."""
+
+        ir.async_create_issue(
+            self.hass,
+            DOMAIN,
+            DOMAIN_NAME + datetime.now().isoformat(),
+            issue_domain=DOMAIN,
+            is_fixable=False,
+            severity=ir.IssueSeverity.WARNING,
+            translation_key=translation_key,
+            translation_placeholders=translation_placeholders,
+        )
+
     # ------------------------------------------------------
     async def async_verify_calendar_entities_exist(self) -> bool:
         """Verify calendar entities exist."""
@@ -443,10 +463,10 @@ class CalendarHandler:
             if state is None:
                 self.create_issue(
                     calendar_entity,
-                    TRANSLATION_KEY_MISSING_ENTITY,
+                    TRANSLATION_KEY_MISSING_CALENDER,
                     {
                         "entity": calendar_entity,
-                        "calendar_merge_helper": calendar_entity,
+                        "calendar_merge_helper": self.entity_id,
                     },
                 )
                 del self.calendar_entities[index]

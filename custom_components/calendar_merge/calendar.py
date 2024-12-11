@@ -41,7 +41,6 @@ class EventsCalendar(CalendarEntity):
 
         self.hass: HomeAssistant = hass
         self.entry: CommonConfigEntry = entry
-        # self._event: CalendarEvent | None = None
 
         self.coordinator: DataUpdateCoordinator = entry.runtime_data.coordinator
         self.calendar_handler: CalendarHandler = entry.runtime_data.calendar_handler
@@ -110,3 +109,4 @@ class EventsCalendar(CalendarEntity):
         self.async_on_remove(
             self.coordinator.async_add_listener(self.async_write_ha_state)
         )
+        self.calendar_handler.entity_id = self.entity_id

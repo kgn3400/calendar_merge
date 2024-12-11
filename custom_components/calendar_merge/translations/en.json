@@ -85,8 +85,8 @@
     }
   },
   "issues": {
-    "missing_entity": {
-      "description": "It looks like either entity `{entity}` has been deleted or renamed, which are used in Calendar merge helper `{calendar_merge_helper}`. \n\n Please fix this problem.",
+    "missing_calendar": {
+      "description": "It looks like either calendar entity `{entity}` has been deleted or renamed, which are used in Calendar merge helper `{calendar_merge_helper}`. \n\n Please fix this problem.",
       "title": "Calendar merge helper: Entity deleted or renamed"
     },
     "template_error": {

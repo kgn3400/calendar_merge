@@ -85,8 +85,8 @@
     }
   },
   "issues": {
-    "missing_entity": {
-      "description": "Det ser ud til, at entiteten `{entity}` enten er blevet slettet eller omdøbt, som bruges i Kalenderfletning hjælperen `{calendar_merge_helper}`.\n\n Venligst løs dette problem.",
+    "missing_calendar": {
+      "description": "Det ser ud til, at kalender entiteten `{entity}` enten er blevet slettet eller omdøbt, som bruges i Kalenderfletning hjælperen `{calendar_merge_helper}`.\n\n Venligst løs dette problem.",
       "title": "Kalenderfletning hjælper: Entitet slettet eller omdøbt"
     },
     "template_error": {

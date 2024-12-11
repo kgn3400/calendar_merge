@@ -7,8 +7,7 @@ DOMAIN_NAME = "Calendar Merge"
 LOGGER: Logger = getLogger(__name__)
 
 TRANSLATION_KEY = DOMAIN
-TRANSLATION_KEY_MISSING_ENTITY = "missing_entity"
-TRANSLATION_KEY_MISSING__TIMER_ENTITY = "missing_timer_entity"
+TRANSLATION_KEY_MISSING_CALENDER = "missing_calendar"
 TRANSLATION_KEY_TEMPLATE_ERROR = "template_error"
 
 CONF_DAYS_AHEAD = "days_ahead"
