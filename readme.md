@@ -24,9 +24,9 @@ Or click
 [![Open your Home Assistant instance and start setting up a new integration.](https://my.home-assistant.io/badges/config_flow_start.svg)](https://my.home-assistant.io/redirect/config_flow_start/?domain=calendar_merge)
 <br>
 <!-- <img src="images/config.png" width="400" height="auto" alt="Config1"> -->
-<img src="/assets/config1.png" width="400" height="auto" alt="Config">
+<img src="https://kgn3400.github.io/calendar_merge/assets/config1.png" width="400" height="auto" alt="Config">
 <br/>
-<img src="/assets/config2.png" width="400" height="auto" alt="Config">
+<img src="https://kgn3400.github.io/calendar_merge/assets/config2.png" width="400" height="auto" alt="Config">
 <br/>
 <br/>
 
