@@ -9,6 +9,7 @@
 
 # Calendar merge helper
 
+<br/>
 The calendar merge helper allows you to create an overall overview for one or more calendars. For a certain number of days into the future and a maximum number of events.
 
 There will be created a calendar with the merged calendar events and a main sensor with the number of calendar events. And attributes with events formatted and raw to create the markdown text or used a template.
