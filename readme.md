@@ -1,10 +1,13 @@
-# Calendar merge helper
-
+<!-- markdownlint-disable MD041 -->
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/kgn3400/calendar_merge)
 ![GitHub all releases](https://img.shields.io/github/downloads/kgn3400/calendar_merge/total)
 ![GitHub last commit](https://img.shields.io/github/last-commit/kgn3400/calendar_merge)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/kgn3400/calendar_merge)
 [![Validate% with hassfest](https://github.com/kgn3400/calendar_merge/workflows/Validate%20with%20hassfest/badge.svg)](https://github.com/kgn3400/calendar_merge/actions/workflows/hassfest.yaml)
+
+<img align="left" width="80" height="80" src="https://kgn3400.github.io/calendar_merge/assets/icon.png" alt="App icon">
+
+# Calendar merge helper
 
 The calendar merge helper allows you to create an overall overview for one or more calendars. For a certain number of days into the future and a maximum number of events.
 
