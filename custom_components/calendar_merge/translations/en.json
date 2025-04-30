@@ -36,6 +36,12 @@
           "md_header_template": "Calendar header template for markdown text",
           "md_item_template": "Calendar event template for markdown text. Values = package_name, version and old_version. Use html tag 'br' for linebreak"
         }
+      },
+      "unit_of_measurement": {
+        "data": {
+          "days": "days",
+          "events": "events"
+        }
       }
     }
   },
@@ -66,6 +72,12 @@
           "format_language": "Language to use for formatting date and time",
           "md_header_template": "Header template for markdown text",
           "md_item_template": "Item template for markdown text. Values = package_name, version and old_version. Use html tag 'br' for linebreak"
+        }
+      },
+      "unit_of_measurement": {
+        "data": {
+          "days": "days",
+          "events": "events"
         }
       }
     }

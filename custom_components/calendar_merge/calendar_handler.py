@@ -4,7 +4,6 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import date, datetime, timedelta
-from functools import partial
 from typing import Any
 
 from arrow.locales import get_locale
@@ -22,7 +21,6 @@ from homeassistant.util import dt as dt_util
 from .const import (
     CONF_CALENDAR_ENTITY_IDS,
     CONF_DAYS_AHEAD,
-    CONF_FORMAT_LANGUAGE,
     CONF_MAX_EVENTS,
     CONF_MD_HEADER_TEMPLATE,
     CONF_MD_ITEM_TEMPLATE,
@@ -36,6 +34,7 @@ from .const import (
     TRANSLATION_KEY_MISSING_CALENDER,
     TRANSLATION_KEY_TEMPLATE_ERROR,
 )
+from .hass_util import async_get_user_language, async_hass_add_executor_job
 
 
 # ------------------------------------------------------
@@ -165,9 +164,6 @@ class CalendarHandler:
         self.hass: HomeAssistant = hass
         self.entry: ConfigEntry = entry
         self.events: list[CalendarMergeEvent] = []
-        self.language: str = self.entry.options.get(
-            CONF_FORMAT_LANGUAGE, self.hass.config.language
-        )
 
         self.entity_id: str = ""
         registry = er.async_get(hass)
@@ -184,7 +180,14 @@ class CalendarHandler:
         )
 
     # ------------------------------------------------------
-    async def merge_calendar_events(
+    async def async_init(
+        self,
+    ) -> None:
+        """Async init."""
+        self.language = await async_get_user_language()
+
+    # ------------------------------------------------------
+    async def async_merge_calendar_events(
         self,
     ) -> None:
         """Merge calendar events."""
@@ -243,51 +246,69 @@ class CalendarHandler:
             for index2, _ in reversed(list(enumerate(self.events))):
                 if index2 <= index:
                     break
-                if (
-                    self.events[index].calendar == self.events[index2].calendar
-                    and self.events[index].summary == self.events[index2].summary
-                    and self.events[index].description
-                    == self.events[index2].description
-                    and self.events[index].start.time()
-                    == self.events[index2].start.time()
-                    and self.events[index].end.time() == self.events[index2].end.time()
-                ):
-                    del self.events[index2]
+
+                if self.events[index].all_day == self.events[index2].all_day:
+                    if (
+                        isinstance(self.events[index].start, datetime)
+                        and self.events[index].calendar == self.events[index2].calendar
+                        and self.events[index].summary == self.events[index2].summary
+                        and self.events[index].description
+                        == self.events[index2].description
+                        and self.events[index].start.time()
+                        == self.events[index2].start.time()
+                        and self.events[index].end.time()
+                        == self.events[index2].end.time()
+                    ) or (
+                        isinstance(self.events[index].start, date)
+                        and self.events[index].calendar == self.events[index2].calendar
+                        and self.events[index].summary == self.events[index2].summary
+                        and self.events[index].description
+                        == self.events[index2].description
+                    ):
+                        del self.events[index2]
+
             index += 1
 
     # ------------------------------------------------------
-    async def async_format_datetime(
+    @async_hass_add_executor_job()
+    def format_datetime(
         self,
         date_time: datetime | date,
     ) -> str | None:
         """Format datetime."""
 
-        date_str: str = await self.hass.async_add_executor_job(
-            partial(
-                format_date,
-                date=date_time,
-                format="medium",
-                locale=self.language,
-            )
+        date_str: str = format_date(
+            date=date_time,
+            format="medium",
+            locale=self.language,
         )
 
         if isinstance(date_time, date):
             return date_str
 
-        dt_format = await self.hass.async_add_executor_job(
-            get_datetime_format, "medium", self.language
-        )
+        dt_format = get_datetime_format("medium", self.language)
 
-        time_str: str = await self.hass.async_add_executor_job(
-            partial(
-                format_time,
-                time=date_time,
-                format="short",
-                locale=self.language,
-            )
+        time_str: str = format_time(
+            time=date_time,
+            format="short",
+            locale=self.language,
         )
 
         return dt_format.format(time_str, date_str)
+
+    # ------------------------------------------------------
+    @async_hass_add_executor_job()
+    def format_td(
+        self,
+        time_delta: timedelta,
+    ) -> str | None:
+        """Format timedelte."""
+
+        return format_timedelta(
+            time_delta,
+            add_direction=True,
+            locale=self.language,
+        )
 
     # ------------------------------------------------------
     async def async_format_event(self, event_num: int) -> str | None:
@@ -296,10 +317,8 @@ class CalendarHandler:
         if event_num < len(self.events):
             tmp_event = self.events[event_num]
 
-            tmp_event.formatted_start = await self.async_format_datetime(
-                tmp_event.start
-            )
-            tmp_event.formatted_end = await self.async_format_datetime(tmp_event.end)
+            tmp_event.formatted_start = await self.format_datetime(tmp_event.start)
+            tmp_event.formatted_end = await self.format_datetime(tmp_event.end)
 
             diff: timedelta = tmp_event.start_datetime_local - dt_util.now()
 
@@ -309,14 +328,7 @@ class CalendarHandler:
                 )
 
             elif self.show_event_as_time_to:
-                formatted_event_str: str = await self.hass.async_add_executor_job(
-                    partial(
-                        format_timedelta,
-                        delta=diff,
-                        add_direction=True,
-                        locale=self.language,
-                    )
-                )
+                formatted_event_str: str = await self.format_td(diff)
 
             else:
                 formatted_event_str = tmp_event.formatted_start

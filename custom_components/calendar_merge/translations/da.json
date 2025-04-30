@@ -36,6 +36,12 @@
           "md_header_template": "Kalender header template til markdown tekst",
           "md_item_template": "Kalenderbegivenhed template til markdown tekst. Værdier = package_name, version og old_version. Brug html tag 'br' for linjeskift"
         }
+      },
+      "unit_of_measurement": {
+        "data": {
+          "days": "dage",
+          "events": "begivenheder"
+        }
       }
     }
   },
@@ -66,6 +72,12 @@
           "format_language": "Sprog der skal bruges til formattering af dato og tid",
           "md_header_template": "Kalender header template til markdown tekst",
           "md_item_template": "Kalenderbegivenhed template til markdown tekst. Værdier = package_name, version og old_version. Brug html tag 'br' for linjeskift"
+        }
+      },
+      "unit_of_measurement": {
+        "data": {
+          "days": "dage",
+          "events": "begivenheder"
         }
       }
     }

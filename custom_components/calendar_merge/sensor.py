@@ -127,34 +127,28 @@ class CalendarMergeSensor(SensorEntity, BaseCalendarMergeSensor):
             {
                 vol.Optional(SERVICE_SAVE_SETTINGS): cv.boolean,
             },
-            self.async_toggle_show_as_time_to_dispatcher,
+            self.async_toggle_show_as_time_to,
             [FanEntityFeature.SET_SPEED],  #! Cheating here
         )
 
     # ------------------------------------------------------------------
-    async def async_toggle_show_as_time_to_dispatcher(
-        self, entity: BaseCalendarMergeSensor, service_data: ServiceCall
+    async def async_toggle_show_as_time_to(
+        self, entity: CalendarMergeSensor, service_data: ServiceCall
     ) -> None:
-        """Toggle show time as time to dispatcher."""
-
-        await entity.async_toggle_show_as_time_to(service_data)
-
-    # ------------------------------------------------------------------
-    async def async_toggle_show_as_time_to(self, service_data: ServiceCall) -> None:
         """Toggle show time as time to."""
 
-        self.calendar_handler.show_event_as_time_to = (
-            not self.calendar_handler.show_event_as_time_to
+        entity.calendar_handler.show_event_as_time_to = (
+            not entity.calendar_handler.show_event_as_time_to
         )
 
         if service_data.data.get(SERVICE_SAVE_SETTINGS, False):
             tmp_entry_options: dict[str, Any] = self.entry.options.copy()
             tmp_entry_options[CONF_SHOW_EVENT_AS_TIME_TO] = (
-                self.calendar_handler.show_event_as_time_to
+                entity.calendar_handler.show_event_as_time_to
             )
-            self.update_settings(tmp_entry_options)
+            entity.update_settings(tmp_entry_options)
 
-        await self.coordinator.async_refresh()
+        await entity.coordinator.async_refresh()
 
     # ------------------------------------------------------------------
     def update_settings(self, entry_options: dict[str, Any]) -> None:
@@ -169,7 +163,7 @@ class CalendarMergeSensor(SensorEntity, BaseCalendarMergeSensor):
     # ------------------------------------------------------------------
     async def async_refresh(self) -> None:
         """Refresh."""
-        await self.calendar_handler.merge_calendar_events()
+        await self.calendar_handler.async_merge_calendar_events()
 
         for event_sensor in self.events_sensors:
             await event_sensor.async_refresh()
@@ -201,7 +195,7 @@ class CalendarMergeSensor(SensorEntity, BaseCalendarMergeSensor):
         """Hass started."""
 
         await self.calendar_handler.async_verify_calendar_entities_exist()
-        await self.calendar_handler.merge_calendar_events()
+        await self.calendar_handler.async_merge_calendar_events()
         self.async_schedule_update_ha_state()
         await self.coordinator.async_refresh()
 

@@ -36,6 +36,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: CommonConfigEntry) -> bo
         entry,
     )
 
+    await calendar_handler.async_init()
+
     coordinator: DataUpdateCoordinator = DataUpdateCoordinator(
         hass,
         LOGGER,
