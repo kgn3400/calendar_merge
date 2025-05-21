@@ -16,7 +16,8 @@ There will be created a calendar with the merged calendar events and a main sens
 And for each event there will be created a sensor with a postfix _event_0 to _event_x with the summary and the event date.
 Please note that changes to the monitored calendars first will be reflected in the Calendar merge helper within a couple of minutes.
 
-For installation instructions until the Calendar merge helper is part of HACS, [see this guide](https://hacs.xyz/docs/faq/custom_repositories).
+## Installation
+For installation search for Calendar merge helper and download.
 Or click
 [![My Home Assistant](https://img.shields.io/badge/Home%20Assistant-%2341BDF5.svg?style=flat&logo=home-assistant&label=Add%20to%20HACS)](https://my.home-assistant.io/redirect/hacs_repository/?owner=kgn3400&repository=calendar_merge&category=integration)
 
