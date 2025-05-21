@@ -17,6 +17,7 @@ And for each event there will be created a sensor with a postfix _event_0 to _ev
 Please note that changes to the monitored calendars first will be reflected in the Calendar merge helper within a couple of minutes.
 
 ## Installation
+
 For installation search for Calendar merge helper and download.
 Or click
 [![My Home Assistant](https://img.shields.io/badge/Home%20Assistant-%2341BDF5.svg?style=flat&logo=home-assistant&label=Add%20to%20HACS)](https://my.home-assistant.io/redirect/hacs_repository/?owner=kgn3400&repository=calendar_merge&category=integration)
