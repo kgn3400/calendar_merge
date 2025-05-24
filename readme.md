@@ -26,7 +26,7 @@ Or click
 
 ## Configuration
 
-Configuration is setup via UI in Home assistant. To add one, go to [Settings > Devices & Services > Helpers](https://my.home-assistant.io/redirect/helpers) and click the add button. Next choose the [Calendar merge helper](https://my.home-assistant.io/redirect/config_flow_start?domain=calendar_merge) option.
+Configuration is done through the Home Assistant UI. To add a new entry, simply go to [Settings > Devices & Services > Helpers](https://my.home-assistant.io/redirect/helpers) and click the add button. Next choose the [Calendar merge helper](https://my.home-assistant.io/redirect/config_flow_start?domain=calendar_merge) option.
 
 Or click
 [![Open your Home Assistant instance and start setting up a new integration.](https://my.home-assistant.io/badges/config_flow_start.svg)](https://my.home-assistant.io/redirect/config_flow_start/?domain=calendar_merge)
