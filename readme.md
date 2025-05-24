@@ -10,15 +10,17 @@
 # Calendar merge helper
 
 <br/>
-The calendar merge helper allows you to create an overall overview for one or more calendars. For a certain number of days into the future and a maximum number of events.
+The Calendar Merge Helper gives you a complete overview by combining events from one or more calendars. You can set how many days ahead to include and limit the maximum number of events shown.
 
-There will be created a calendar with the merged calendar events and a main sensor with the number of calendar events. And attributes with events formatted and raw to create the markdown text or used a template.
-And for each event there will be created a sensor with a postfix _event_0 to _event_x with the summary and the event date.
-Please note that changes to the monitored calendars first will be reflected in the Calendar merge helper within a couple of minutes.
+The helper creates a merged calendar with all relevant events, plus a main sensor that shows the total number of upcoming events. It also provides attributes with both formatted and raw event data, making it easy to generate markdown text or use templates.
+
+Additionally, for each event, an individual sensor is created (with names like _event_0, _event_1, etc.) containing the event summary and date.
+
+Please note: Changes made to the monitored calendars may take a few minutes to appear in the Calendar Merge Helper.
 
 ## Installation
 
-For installation search for Calendar merge helper and download.
+For installation search for Calendar merge helper in HACS and download.
 Or click
 [![My Home Assistant](https://img.shields.io/badge/Home%20Assistant-%2341BDF5.svg?style=flat&logo=home-assistant&label=Add%20to%20HACS)](https://my.home-assistant.io/redirect/hacs_repository/?owner=kgn3400&repository=calendar_merge&category=integration)
 
