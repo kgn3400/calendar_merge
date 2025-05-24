@@ -61,3 +61,7 @@ Available actions: __toggle_show_as_time_to__
 ### action calendar_merge.toggle_show_as_time_to
 
 Toggle 'Show calendar event as time to' option.
+
+### Support
+
+If you like this integration or find it useful, please consider giving it a ⭐️ on GitHub 👍 Your support is greatly appreciated!
