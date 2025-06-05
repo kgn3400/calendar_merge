@@ -10,6 +10,7 @@
 # Calendar merge helper
 
 <br/>
+
 The Calendar Merge Helper gives you a complete overview by combining events from one or more calendars. You can set how many days ahead to include and limit the maximum number of events shown.
 
 The helper creates a merged calendar with all relevant events, plus a main sensor that shows the total number of upcoming events. It also provides attributes with both formatted and raw event data, making it easy to generate markdown text or use templates.
