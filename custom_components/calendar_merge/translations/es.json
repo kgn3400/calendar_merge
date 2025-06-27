@@ -1,0 +1,121 @@
+{
+  "title": "Fusión de calendarios",
+  "entity_component": {
+    "_": {
+      "name": "Fusión de calendarios"
+    }
+  },
+  "config": {
+    "abort": {
+      "already_configured": "El dispositivo ya está configurado"
+    },
+    "error": {
+      "missing_selection": "No hay ningún calendario seleccionado",
+      "unknown": "Error inesperado"
+    },
+    "step": {
+      "user": {
+        "title": "Asistente para combinar calendarios",
+        "description": "El asistente de fusión de calendarios permite crear una vista general de uno o más calendarios, con un número determinado de días en el futuro y un número máximo de eventos.",
+        "data": {
+          "name": "Nombre del sensor",
+          "days_ahead": "Obtenga días de anticipación para los eventos del calendario",
+          "max_events": "Obtener el máximo de eventos del calendario",
+          "remove_recurring_events": "Eliminar eventos recurrentes del calendario",
+          "calender_entity_ids": "Calendarios que monitorea este sensor"
+        }
+      },
+      "user_format": {
+        "title": "Asistente para combinar calendarios",
+        "data": {
+          "show_event_as_time_to": "Mostrar evento del calendario como hora a",
+          "show_show_end_date": "Mostrar fecha de finalización",
+          "show_summary": "Mostrar resumen",
+          "use_summary_as_entity_name": "Utilice resumen como nombre de entidad",
+          "format_language": "Idioma al que el usuario puede dar formato a la fecha y la hora",
+          "md_header_template": "Plantilla de encabezado de calendario para texto de rebajas",
+          "md_item_template": "Plantilla de evento de calendario para texto en formato Markdown. Valores: nombre_del_paquete, versión y versión_anterior. Usar la etiqueta HTML \"br\" para el salto de línea."
+        }
+      },
+      "unit_of_measurement": {
+        "data": {
+          "days": "días",
+          "events": "eventos"
+        }
+      }
+    }
+  },
+  "options": {
+    "abort": {
+      "already_configured": "El dispositivo ya está configurado"
+    },
+    "error": {
+      "missing_selection": "No hay ningún calendario seleccionado",
+      "unknown": "Error inesperado"
+    },
+    "step": {
+      "init": {
+        "data": {
+          "name": "Nombre del sensor",
+          "days_ahead": "Obtenga días de anticipación para los eventos del calendario",
+          "max_events": "Obtener el máximo de eventos del calendario",
+          "remove_recurring_events": "Eliminar eventos recurrentes del calendario",
+          "calender_entity_ids": "Calendarios que monitorea este sensor"
+        }
+      },
+      "init_format": {
+        "data": {
+          "show_event_as_time_to": "Mostrar evento del calendario como hora a",
+          "show_show_end_date": "Mostrar fecha de finalización",
+          "show_summary": "Mostrar resumen",
+          "use_summary_as_entity_name": "Utilice resumen como nombre de entidad",
+          "format_language": "Idioma a utilizar para formatear fecha y hora",
+          "md_header_template": "Plantilla de encabezado para texto de rebajas",
+          "md_item_template": "Plantilla de elemento para texto de Markdown. Valores = nombre_del_paquete, versión y versión_anterior. Usar la etiqueta HTML \"br\" para el salto de línea."
+        }
+      },
+      "unit_of_measurement": {
+        "data": {
+          "days": "días",
+          "events": "eventos"
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "calendar_merge": {
+        "state_attributes": {
+          "events": {
+            "name": "Eventos"
+          },
+          "markdown_text": {
+            "name": "Texto de Markdown"
+          }
+        }
+      }
+    }
+  },
+  "issues": {
+    "missing_calendar": {
+      "description": "Parece que se ha eliminado o renombrado la entidad de calendario `{entity}`, que se utiliza en el asistente de combinación de calendarios `{calendar_merge_helper}`.\n\nSolucione este problema.",
+      "title": "Asistente de fusión de calendarios: Entidad eliminada o renombrada"
+    },
+    "template_error": {
+      "description": "La representación de la plantilla de Markdown `{template}` en el asistente de combinación de calendario `{calendar_merge_helper}` finaliza con un error.\nError: `{error_txt}`\n\nSolucione este problema.",
+      "title": "Asistente para combinar calendarios: Error de plantilla"
+    }
+  },
+  "services": {
+    "toggle_show_as_time_to": {
+      "description": "Activar la opción \"Mostrar evento del calendario como fecha límite\". Seleccionar la entidad de eventos del calendario sin el sufijo _event_x.",
+      "name": "Activar o desactivar la opción 'Mostrar evento del calendario como fecha límite'",
+      "fields": {
+        "save_settings": {
+          "description": "Opción para guardar configuración.",
+          "name": "Opción para guardar la configuración"
+        }
+      }
+    }
+  }
+}
