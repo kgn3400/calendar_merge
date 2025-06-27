@@ -1,0 +1,121 @@
+{
+  "title": "Kalenderzusammenführung",
+  "entity_component": {
+    "_": {
+      "name": "Kalenderzusammenführung"
+    }
+  },
+  "config": {
+    "abort": {
+      "already_configured": "Das Gerät ist bereits konfiguriert"
+    },
+    "error": {
+      "missing_selection": "Kein Kalender ausgewählt",
+      "unknown": "Unerwarteter Fehler"
+    },
+    "step": {
+      "user": {
+        "title": "Kalenderzusammenführungshilfe",
+        "description": "Mit dem Kalenderzusammenführungshelfer können Sie eine Gesamtübersicht für einen oder mehrere Kalender erstellen. Für eine bestimmte Anzahl von Tagen in der Zukunft und eine maximale Anzahl von Ereignissen.",
+        "data": {
+          "name": "Sensorname",
+          "days_ahead": "Kalenderereignisse Tage im Voraus abrufen",
+          "max_events": "Maximale Anzahl an Kalenderereignissen abrufen",
+          "remove_recurring_events": "Entfernen wiederkehrender Kalenderereignisse",
+          "calender_entity_ids": "Kalender, die dieser Sensor überwacht"
+        }
+      },
+      "user_format": {
+        "title": "Kalenderzusammenführungshilfe",
+        "data": {
+          "show_event_as_time_to": "Kalenderereignis als Zeit anzeigen bis",
+          "show_show_end_date": "Enddatum anzeigen",
+          "show_summary": "Zusammenfassung anzeigen",
+          "use_summary_as_entity_name": "Zusammenfassung als Entitätsnamen verwenden",
+          "format_language": "Sprache für die Formatierung von Datum und Uhrzeit",
+          "md_header_template": "Kalenderkopfzeilenvorlage für Markdown-Text",
+          "md_item_template": "Kalenderereignisvorlage für Markdown-Text. Werte = Paketname, Version und alte Version. Verwenden Sie den HTML-Tag „br“ für den Zeilenumbruch."
+        }
+      },
+      "unit_of_measurement": {
+        "data": {
+          "days": "Tage",
+          "events": "Veranstaltungen"
+        }
+      }
+    }
+  },
+  "options": {
+    "abort": {
+      "already_configured": "Das Gerät ist bereits konfiguriert"
+    },
+    "error": {
+      "missing_selection": "Kein Kalender ausgewählt",
+      "unknown": "Unerwarteter Fehler"
+    },
+    "step": {
+      "init": {
+        "data": {
+          "name": "Sensorname",
+          "days_ahead": "Kalenderereignisse Tage im Voraus abrufen",
+          "max_events": "Maximale Anzahl an Kalenderereignissen abrufen",
+          "remove_recurring_events": "Entfernen wiederkehrender Kalenderereignisse",
+          "calender_entity_ids": "Kalender, die dieser Sensor überwacht"
+        }
+      },
+      "init_format": {
+        "data": {
+          "show_event_as_time_to": "Kalenderereignis als Zeit anzeigen bis",
+          "show_show_end_date": "Enddatum anzeigen",
+          "show_summary": "Zusammenfassung anzeigen",
+          "use_summary_as_entity_name": "Zusammenfassung als Entitätsnamen verwenden",
+          "format_language": "Für die Formatierung von Datum und Uhrzeit zu verwendende Sprache",
+          "md_header_template": "Kopfzeilenvorlage für Markdown-Text",
+          "md_item_template": "Artikelvorlage für Markdown-Text. Werte = Paketname, Version und alte Version. Verwenden Sie den HTML-Tag „br“ für den Zeilenumbruch."
+        }
+      },
+      "unit_of_measurement": {
+        "data": {
+          "days": "Tage",
+          "events": "Veranstaltungen"
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "calendar_merge": {
+        "state_attributes": {
+          "events": {
+            "name": "Veranstaltungen"
+          },
+          "markdown_text": {
+            "name": "Markdown-Text"
+          }
+        }
+      }
+    }
+  },
+  "issues": {
+    "missing_calendar": {
+      "description": "Offenbar wurde die Kalenderentität „{entity}“ gelöscht oder umbenannt. Diese wird im Kalenderzusammenführungsassistenten „{calendar_merge_helper}“ verwendet.\n\nBitte beheben Sie dieses Problem.",
+      "title": "Kalenderzusammenführungshilfe: Entität gelöscht oder umbenannt"
+    },
+    "template_error": {
+      "description": "Das Rendern der Markdown-Vorlage „{template}“ im Kalender-Zusammenführungsassistenten „{calendar_merge_helper}“ endet mit einem Fehler.\n\nFehler: „{error_txt}“\n\nBitte beheben Sie dieses Problem.",
+      "title": "Kalenderzusammenführungshilfe: Vorlagenfehler"
+    }
+  },
+  "services": {
+    "toggle_show_as_time_to": {
+      "description": "Aktivieren Sie die Option „Kalenderereignis als Zeit bis anzeigen“. Wählen Sie die Entität „Kalenderereignisse“ ohne Suffix _event_x.",
+      "name": "Option „Kalenderereignis als Zeit bis anzeigen“ umschalten",
+      "fields": {
+        "save_settings": {
+          "description": "Option zum Speichern der Einstellungen.",
+          "name": "Option „Einstellungen speichern“"
+        }
+      }
+    }
+  }
+}
