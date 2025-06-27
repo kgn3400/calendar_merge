@@ -1,0 +1,121 @@
+{
+  "title": "Mesclagem de calendários",
+  "entity_component": {
+    "_": {
+      "name": "Mesclagem de calendários"
+    }
+  },
+  "config": {
+    "abort": {
+      "already_configured": "O dispositivo já está configurado"
+    },
+    "error": {
+      "missing_selection": "Nenhum calendário selecionado",
+      "unknown": "Erro inesperado"
+    },
+    "step": {
+      "user": {
+        "title": "Auxiliar de mesclagem de calendários",
+        "description": "O assistente de mesclagem de calendários permite criar uma visão geral para um ou mais calendários, com um número específico de dias no futuro e um número máximo de eventos.",
+        "data": {
+          "name": "Nome do sensor",
+          "days_ahead": "Receba eventos do calendário com dias de antecedência",
+          "max_events": "Obtenha o máximo de eventos do calendário",
+          "remove_recurring_events": "Remover eventos recorrentes do calendário",
+          "calender_entity_ids": "Calendários que este sensor monitora"
+        }
+      },
+      "user_format": {
+        "title": "Auxiliar de mesclagem de calendários",
+        "data": {
+          "show_event_as_time_to": "Mostrar evento do calendário como hora para",
+          "show_show_end_date": "Mostrar data final",
+          "show_summary": "Resumo do show",
+          "use_summary_as_entity_name": "Use resumo como nome da entidade",
+          "format_language": "Idioma para usr para formatação de data e hora",
+          "md_header_template": "Modelo de cabeçalho de calendário para texto markdown",
+          "md_item_template": "Modelo de evento de calendário para texto em markdown. Valores = nome_do_pacote, versão e versão_antiga. Use a tag HTML 'br' para quebra de linha."
+        }
+      },
+      "unit_of_measurement": {
+        "data": {
+          "days": "dias",
+          "events": "eventos"
+        }
+      }
+    }
+  },
+  "options": {
+    "abort": {
+      "already_configured": "O dispositivo já está configurado"
+    },
+    "error": {
+      "missing_selection": "Nenhum calendário selecionado",
+      "unknown": "Erro inesperado"
+    },
+    "step": {
+      "init": {
+        "data": {
+          "name": "Nome do sensor",
+          "days_ahead": "Receba eventos do calendário com dias de antecedência",
+          "max_events": "Obtenha o máximo de eventos do calendário",
+          "remove_recurring_events": "Remover eventos recorrentes do calendário",
+          "calender_entity_ids": "Calendários que este sensor monitora"
+        }
+      },
+      "init_format": {
+        "data": {
+          "show_event_as_time_to": "Mostrar evento do calendário como hora para",
+          "show_show_end_date": "Mostrar data final",
+          "show_summary": "Resumo do show",
+          "use_summary_as_entity_name": "Use resumo como nome da entidade",
+          "format_language": "Idioma a ser usado para formatação de data e hora",
+          "md_header_template": "Modelo de cabeçalho para texto markdown",
+          "md_item_template": "Modelo de item para texto em markdown. Valores = nome_do_pacote, versão e versão_antiga. Use a tag HTML 'br' para quebra de linha."
+        }
+      },
+      "unit_of_measurement": {
+        "data": {
+          "days": "dias",
+          "events": "eventos"
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "calendar_merge": {
+        "state_attributes": {
+          "events": {
+            "name": "Eventos"
+          },
+          "markdown_text": {
+            "name": "Texto Markdown"
+          }
+        }
+      }
+    }
+  },
+  "issues": {
+    "missing_calendar": {
+      "description": "Parece que a entidade de calendário `{entity}` foi excluída ou renomeada, que é usada no assistente de mesclagem de calendários `{calendar_merge_helper}`.\n\nPor favor, corrija este problema.",
+      "title": "Auxiliar de mesclagem de calendário: entidade excluída ou renomeada"
+    },
+    "template_error": {
+      "description": "A renderização do modelo de markdown `{template}` no assistente de mesclagem de calendários `{calendar_merge_helper}` termina com erro.\nErro: `{error_txt}`\n\nCorrija este problema.",
+      "title": "Assistente de mesclagem de calendário: erro de modelo"
+    }
+  },
+  "services": {
+    "toggle_show_as_time_to": {
+      "description": "Alterne a opção \"Mostrar evento do calendário com data e hora\". Escolha a entidade de eventos do calendário sem o sufixo _event_x.",
+      "name": "Alternar a opção 'Mostrar evento do calendário como hora para'",
+      "fields": {
+        "save_settings": {
+          "description": "Opção de salvar configurações.",
+          "name": "Opção de salvar configurações"
+        }
+      }
+    }
+  }
+}
