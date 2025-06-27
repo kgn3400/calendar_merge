@@ -1,0 +1,121 @@
+{
+  "title": "Fusion de calendrier",
+  "entity_component": {
+    "_": {
+      "name": "Fusion de calendrier"
+    }
+  },
+  "config": {
+    "abort": {
+      "already_configured": "L'appareil est déjà configuré"
+    },
+    "error": {
+      "missing_selection": "Aucun calendrier sélectionné",
+      "unknown": "Erreur inattendue"
+    },
+    "step": {
+      "user": {
+        "title": "Aide à la fusion du calendrier",
+        "description": "L'assistant de fusion de calendriers vous permet de créer une vue d'ensemble pour un ou plusieurs calendriers, pour un certain nombre de jours à venir et un nombre maximal d'événements.",
+        "data": {
+          "name": "Nom du capteur",
+          "days_ahead": "Recevez les événements du calendrier des jours à l'avance",
+          "max_events": "Obtenez un maximum d'événements du calendrier",
+          "remove_recurring_events": "Supprimer les événements récurrents du calendrier",
+          "calender_entity_ids": "Calendriers surveillés par ce capteur"
+        }
+      },
+      "user_format": {
+        "title": "Aide à la fusion du calendrier",
+        "data": {
+          "show_event_as_time_to": "Afficher l'événement du calendrier comme heure de",
+          "show_show_end_date": "Afficher la date de fin",
+          "show_summary": "Afficher le résumé",
+          "use_summary_as_entity_name": "Utiliser le résumé comme nom d'entité",
+          "format_language": "Langue à utiliser pour le formatage de la date et de l'heure",
+          "md_header_template": "Modèle d'en-tête de calendrier pour le texte Markdown",
+          "md_item_template": "Modèle d'événement de calendrier pour texte Markdown. Valeurs : nom_du_package, version et ancienne_version. Utiliser la balise HTML « br » pour le saut de ligne."
+        }
+      },
+      "unit_of_measurement": {
+        "data": {
+          "days": "jours",
+          "events": "événements"
+        }
+      }
+    }
+  },
+  "options": {
+    "abort": {
+      "already_configured": "L'appareil est déjà configuré"
+    },
+    "error": {
+      "missing_selection": "Aucun calendrier sélectionné",
+      "unknown": "Erreur inattendue"
+    },
+    "step": {
+      "init": {
+        "data": {
+          "name": "Nom du capteur",
+          "days_ahead": "Recevez les événements du calendrier des jours à l'avance",
+          "max_events": "Obtenez un maximum d'événements du calendrier",
+          "remove_recurring_events": "Supprimer les événements récurrents du calendrier",
+          "calender_entity_ids": "Calendriers surveillés par ce capteur"
+        }
+      },
+      "init_format": {
+        "data": {
+          "show_event_as_time_to": "Afficher l'événement du calendrier comme heure de",
+          "show_show_end_date": "Afficher la date de fin",
+          "show_summary": "Afficher le résumé",
+          "use_summary_as_entity_name": "Utiliser le résumé comme nom d'entité",
+          "format_language": "Langue à utiliser pour le formatage de la date et de l'heure",
+          "md_header_template": "Modèle d'en-tête pour le texte Markdown",
+          "md_item_template": "Modèle d'élément pour texte Markdown. Valeurs : nom_du_package, version et ancienne_version. Utiliser la balise HTML « br » pour le saut de ligne."
+        }
+      },
+      "unit_of_measurement": {
+        "data": {
+          "days": "jours",
+          "events": "événements"
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "calendar_merge": {
+        "state_attributes": {
+          "events": {
+            "name": "Événements"
+          },
+          "markdown_text": {
+            "name": "Texte Markdown"
+          }
+        }
+      }
+    }
+  },
+  "issues": {
+    "missing_calendar": {
+      "description": "Il semble que l'une des entités de calendrier « {entity} » ait été supprimée ou renommée, ce qui est utilisé dans l'assistant de fusion de calendrier « {calendar_merge_helper} ».\n\nVeuillez corriger ce problème.",
+      "title": "Aide à la fusion du calendrier : entité supprimée ou renommée"
+    },
+    "template_error": {
+      "description": "Le rendu du modèle Markdown « {template} » dans l'assistant de fusion de calendrier « {calendar_merge_helper} » se termine par une erreur.\n\nErreur : « {error_txt} »\n\nVeuillez corriger ce problème.",
+      "title": "Aide à la fusion du calendrier : erreur de modèle"
+    }
+  },
+  "services": {
+    "toggle_show_as_time_to": {
+      "description": "Activez l'option « Afficher l'événement du calendrier comme heure de fin ». Choisissez l'entité « Événements du calendrier » sans suffixe _event_x.",
+      "name": "Activer/désactiver l'option « Afficher l'événement du calendrier comme heure de »",
+      "fields": {
+        "save_settings": {
+          "description": "Option Enregistrer les paramètres.",
+          "name": "Option d'enregistrement des paramètres"
+        }
+      }
+    }
+  }
+}
