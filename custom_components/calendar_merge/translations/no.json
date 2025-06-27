@@ -1,0 +1,121 @@
+{
+  "title": "Kalendersammenslåing",
+  "entity_component": {
+    "_": {
+      "name": "Kalendersammenslåing"
+    }
+  },
+  "config": {
+    "abort": {
+      "already_configured": "Enheten er allerede konfigurert"
+    },
+    "error": {
+      "missing_selection": "Ingen kalender valgt",
+      "unknown": "Uventet feil"
+    },
+    "step": {
+      "user": {
+        "title": "Hjelp med kalendersammenslåing",
+        "description": "Kalendersammenslåingshjelperen lar deg lage en samlet oversikt for én eller flere kalendere. For et visst antall dager frem i tid og et maksimalt antall hendelser.",
+        "data": {
+          "name": "Sensornavn",
+          "days_ahead": "Få kalenderhendelser dager fremover",
+          "max_events": "Få maksimalt antall kalenderhendelser",
+          "remove_recurring_events": "Fjern gjentakende kalenderhendelser",
+          "calender_entity_ids": "Kalendere denne sensoren overvåker"
+        }
+      },
+      "user_format": {
+        "title": "Hjelp med kalendersammenslåing",
+        "data": {
+          "show_event_as_time_to": "Vis kalenderhendelse som tid til",
+          "show_show_end_date": "Vis sluttdato",
+          "show_summary": "Vis sammendrag",
+          "use_summary_as_entity_name": "Bruk sammendrag som enhetsnavn",
+          "format_language": "Språk til usr for formatering av dato og klokkeslett",
+          "md_header_template": "Mal for kalenderoverskrift for nedsatt tekst",
+          "md_item_template": "Mal for kalenderhendelse for tekst med nedsatt markering. Verdier = pakkenavn, versjon og gammel_versjon. Bruk html-taggen 'br' for linjeskift."
+        }
+      },
+      "unit_of_measurement": {
+        "data": {
+          "days": "dager",
+          "events": "arrangementer"
+        }
+      }
+    }
+  },
+  "options": {
+    "abort": {
+      "already_configured": "Enheten er allerede konfigurert"
+    },
+    "error": {
+      "missing_selection": "Ingen kalender valgt",
+      "unknown": "Uventet feil"
+    },
+    "step": {
+      "init": {
+        "data": {
+          "name": "Sensornavn",
+          "days_ahead": "Få kalenderhendelser dager fremover",
+          "max_events": "Få maksimalt antall kalenderhendelser",
+          "remove_recurring_events": "Fjern gjentakende kalenderhendelser",
+          "calender_entity_ids": "Kalendere denne sensoren overvåker"
+        }
+      },
+      "init_format": {
+        "data": {
+          "show_event_as_time_to": "Vis kalenderhendelse som tid til",
+          "show_show_end_date": "Vis sluttdato",
+          "show_summary": "Vis sammendrag",
+          "use_summary_as_entity_name": "Bruk sammendrag som enhetsnavn",
+          "format_language": "Språk som skal brukes til formatering av dato og klokkeslett",
+          "md_header_template": "Topptekstmal for nedmerkingstekst",
+          "md_item_template": "Elementmal for nedmerkingstekst. Verdier = pakkenavn, versjon og gammel_versjon. Bruk html-taggen 'br' for linjeskift."
+        }
+      },
+      "unit_of_measurement": {
+        "data": {
+          "days": "dager",
+          "events": "arrangementer"
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "calendar_merge": {
+        "state_attributes": {
+          "events": {
+            "name": "Arrangementer"
+          },
+          "markdown_text": {
+            "name": "Markdown-tekst"
+          }
+        }
+      }
+    }
+  },
+  "issues": {
+    "missing_calendar": {
+      "description": "Det ser ut til at enten kalenderenheten `{entity}` er slettet eller har fått nytt navn, som brukes i kalendersammenslåingshjelperen `{calendar_merge_helper}`.\n\nVennligst løs dette problemet.",
+      "title": "Hjelp for kalendersammenslåing: Enhet slettet eller omdøpt"
+    },
+    "template_error": {
+      "description": "Gjengivelse av markdown-malen `{template}` i kalenderflettingshjelperen `{calendar_merge_helper}` ender med en feil.\nFeil: `{error_txt}`\n\nVennligst løs dette problemet.",
+      "title": "Hjelp for kalendersammenslåing: Malfeil"
+    }
+  },
+  "services": {
+    "toggle_show_as_time_to": {
+      "description": "Aktiver alternativet «Vis kalenderhendelse som tid til». Velg kalenderhendelsesenheten uten postfikset _event_x.",
+      "name": "Aktiver alternativet «Vis kalenderhendelse som tid til»",
+      "fields": {
+        "save_settings": {
+          "description": "Lagre innstillinger-alternativet.",
+          "name": "Lagre innstillinger-alternativ"
+        }
+      }
+    }
+  }
+}
