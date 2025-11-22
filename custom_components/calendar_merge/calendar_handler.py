@@ -20,6 +20,7 @@ from homeassistant.util import dt as dt_util
 
 from .const import (
     CONF_CALENDAR_ENTITY_IDS,
+    CONF_CALENDAR_PREFIX_IN_SUMMARY,
     CONF_DAYS_AHEAD,
     CONF_MAX_EVENTS,
     CONF_MD_HEADER_TEMPLATE,
@@ -194,6 +195,9 @@ class CalendarHandler:
 
         self.events = []
 
+        def fix_calendar_name(key: Any) -> str:
+            return str(key).replace("calendar.", "").replace("_", " ").capitalize()
+
         try:
             tmp_events: dict = await self.hass.services.async_call(
                 "calendar",
@@ -214,17 +218,20 @@ class CalendarHandler:
             LOGGER.error(err)
             return
 
-        for key in tmp_events:
-            for event in tmp_events[key]["events"]:
+        for calendar_namr in tmp_events:
+            for event in tmp_events[calendar_namr]["events"]:
                 self.events.append(
                     CalendarMergeEvent(
-                        str(key)
-                        .replace("calendar.", "")
-                        .replace("_", " ")
-                        .capitalize(),
+                        fix_calendar_name(calendar_namr),
                         event["start"],
                         event["end"],
-                        event.get("summary", ""),
+                        fix_calendar_name(calendar_namr)
+                        + "-"
+                        + event.get("summary", "")
+                        if self.entry.options.get(
+                            CONF_CALENDAR_PREFIX_IN_SUMMARY, False
+                        )
+                        else event.get("summary", ""),
                         event.get("description", ""),
                         event.get("location", ""),
                     )

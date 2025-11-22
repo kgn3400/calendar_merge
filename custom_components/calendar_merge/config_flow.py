@@ -28,6 +28,7 @@ from homeassistant.helpers.selector import (
 
 from .const import (
     CONF_CALENDAR_ENTITY_IDS,
+    CONF_CALENDAR_PREFIX_IN_SUMMARY,
     CONF_DAYS_AHEAD,
     CONF_MAX_EVENTS,
     CONF_MD_HEADER_TEMPLATE,
@@ -146,10 +147,10 @@ async def format_schema(handler: SchemaCommonFlowHandler) -> vol.Schema:
                 CONF_USE_SUMMARY_AS_ENTITY_NAME,
                 default=False,
             ): BooleanSelector(),
-            # vol.Required(
-            #     CONF_FORMAT_LANGUAGE,
-            #     default=handler.parent_handler.hass.config.language,
-            # ): LanguageSelector(LanguageSelectorConfig()),
+            vol.Required(
+                CONF_CALENDAR_PREFIX_IN_SUMMARY,
+                default=False,
+            ): BooleanSelector(),
             vol.Optional(
                 CONF_MD_HEADER_TEMPLATE,
                 default=default_md_header_template,

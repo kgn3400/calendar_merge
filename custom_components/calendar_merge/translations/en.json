@@ -32,6 +32,7 @@
           "show_show_end_date": "Show end date",
           "show_summary": "Show summary",
           "use_summary_as_entity_name": "Use summary as entity name",
+          "calendar_prefix_in_summary": "Prefix summary with calendar name",
           "format_language": "Language to usr for formatting date and time",
           "md_header_template": "Calendar header template for markdown text",
           "md_item_template": "Calendar event template for markdown text. Values = package_name, version and old_version. Use html tag 'br' for linebreak"
@@ -69,6 +70,7 @@
           "show_show_end_date": "Show end date",
           "show_summary": "Show summary",
           "use_summary_as_entity_name": "Use summary as entity name",
+          "calendar_prefix_in_summary": "Prefix summary with calendar name",
           "format_language": "Language to use for formatting date and time",
           "md_header_template": "Header template for markdown text",
           "md_item_template": "Item template for markdown text. Values = package_name, version and old_version. Use html tag 'br' for linebreak"
@@ -91,6 +93,9 @@
           },
           "markdown_text": {
             "name": "Markdown text"
+          },
+          "calendar": {
+            "name": "Calendar"
           }
         }
       }

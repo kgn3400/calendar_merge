@@ -32,6 +32,7 @@
           "show_show_end_date": "Vis slut dato",
           "show_summary": "Vis Resumé",
           "use_summary_as_entity_name": "Brug resumé som entitets navn",
+          "calendar_prefix_in_summary": "Præfiks resumé med kalendernavn",
           "format_language": "Sprog der skal bruges til formattering af dato og tid",
           "md_header_template": "Kalender header template til markdown tekst",
           "md_item_template": "Kalenderbegivenhed template til markdown tekst. Værdier = package_name, version og old_version. Brug html tag 'br' for linjeskift"
@@ -69,6 +70,7 @@
           "show_show_end_date": "Vis slut dato",
           "show_summary": "Vis Resumé",
           "use_summary_as_entity_name": "Brug resumé som entitets navn",
+          "calendar_prefix_in_summary": "Præfiks resumé med kalendernavn",
           "format_language": "Sprog der skal bruges til formattering af dato og tid",
           "md_header_template": "Kalender header template til markdown tekst",
           "md_item_template": "Kalenderbegivenhed template til markdown tekst. Værdier = package_name, version og old_version. Brug html tag 'br' for linjeskift"
@@ -91,6 +93,9 @@
           },
           "markdown_text": {
             "name": "Markdown tekst"
+          },
+          "calendar": {
+            "name": "Kalender"
           }
         }
       }

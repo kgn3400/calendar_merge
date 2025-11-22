@@ -18,6 +18,7 @@ CONF_SHOW_EVENT_AS_TIME_TO = "show_event_as_time_to"
 CONF_SHOW_END_DATE = "show_show_end_date"
 CONF_SHOW_SUMMARY = "show_summary"
 CONF_USE_SUMMARY_AS_ENTITY_NAME = "use_summary_as_entity_name"
+CONF_CALENDAR_PREFIX_IN_SUMMARY = "calendar_prefix_in_summary"
 
 CONF_MD_HEADER_TEMPLATE = "md_header_template"
 CONF_DEFAULT_MD_HEADER_TEMPLATE = "defaults.default_md_header_template"

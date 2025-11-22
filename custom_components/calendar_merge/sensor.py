@@ -401,8 +401,12 @@ class CalendarMergeEventsSensor(SensorEntity, BaseCalendarMergeSensor):
             dict: Extra state attributes
 
         """
+        attr: dict = {}
 
-        return {}
+        if len(self.calendar_handler.events) > self.event_num:
+            attr["calendar"] = self.calendar_handler.events[self.event_num].calendar
+
+        return attr
 
     # ------------------------------------------------------
     @property

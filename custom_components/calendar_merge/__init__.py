@@ -42,6 +42,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: CommonConfigEntry) -> bo
         hass,
         LOGGER,
         name=DOMAIN,
+        config_entry=entry,
     )
 
     entry.runtime_data = CommonData(calendar_handler, coordinator)
