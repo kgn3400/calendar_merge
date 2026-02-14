@@ -1,4 +1,4 @@
-<!-- markdownlint-disable MD041 -->
+<!-- markdownlint-disable MD041 MD060 -->
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/kgn3400/calendar_merge)
 ![GitHub all releases](https://img.shields.io/github/downloads/kgn3400/calendar_merge/total)
 ![GitHub last commit](https://img.shields.io/github/last-commit/kgn3400/calendar_merge)
@@ -39,7 +39,9 @@ Or click
 <br/>
 <br/>
 
-| State attribute<br/>Template variable| description              | Example                           |
+## Template variables
+
+| Template variable.   | description           | Example                           |
 | -------------------- | --------------------- | --------------------------------- |
 | calender             | Name of the calendar. | Google Calendar                   |
 | start                | Start of the event.   | 2024-07-03T00:21:00+00:00         |
@@ -48,12 +50,12 @@ Or click
 | summary              | Event summary.        | Home Assistant release party      |
 | description          | Event description.    | New features in Home Assistant    |
 | location             | Event location.       | Online                            |
-| formatted_start      | formatted start.      | Jul 3, 2024, 9:00 PM              |
-| formatted_end        | Event location.       | Jul 3, 2024, 10:00 PM             |
-| formatted_event_time | Event location.       | in 1 week                            |
-| formatted_event      | Event location.       | Home Assistant release party : in 1 week |
+| formatted_start      | Formatted start.      | Jul 3, 2024, 9:00 PM               |
+| formatted_end        | Formatted end.        | Jul 3, 2024, 10:00 PM              |
+| formatted_event_time | Formatted event time. | in 1 week                         |
+| formatted_event      | Formatted event.      | Home Assistant release party : in 1 week |
 
-It's possible to rotate between multiple Calendar events in the same card by using the [Carousel helper integration](https://github.com/kgn3400/carousel)
+It's possible to rotate between multiple Calendar sensor events in the same card by using the [Carousel helper integration](https://github.com/kgn3400/carousel)
 
 ## Actions
 
