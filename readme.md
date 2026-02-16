@@ -16,8 +16,9 @@ The Calendar Merge Helper gives you a complete overview by combining events from
 The helper creates a merged calendar with all relevant events, plus a main sensor that shows the total number of upcoming events. It also provides attributes with both formatted and raw event data, making it easy to generate markdown text or use templates.
 
 Additionally, for each event, an individual sensor is created (with names like _event_0, _event_1, etc.) containing the event summary and date.
+It's possible to rotate between multiple Calendar sensor events in the same card by using the [Simple swipe card](https://github.com/nutteloost/simple-swipe-card)
 
-Please note: Changes made to the monitored calendars may take a few minutes to appear in the Calendar Merge Helper.
+**Please note:** Changes made to the monitored calendars may take a few minutes to appear in the Calendar Merge Helper.
 
 ## Installation
 
@@ -41,6 +42,8 @@ Or click
 
 ## Template variables
 
+The template variables listed below are available for calendar event formatting.
+
 | Template variable.   | description           | Example                           |
 | -------------------- | --------------------- | --------------------------------- |
 | calender             | Name of the calendar. | Google Calendar                   |
@@ -50,20 +53,21 @@ Or click
 | summary              | Event summary.        | Home Assistant release party      |
 | description          | Event description.    | New features in Home Assistant    |
 | location             | Event location.       | Online                            |
-| formatted_start      | Formatted start.      | Jul 3, 2024, 9:00 PM               |
-| formatted_end        | Formatted end.        | Jul 3, 2024, 10:00 PM              |
-| formatted_event_time | Formatted event time. | in 1 week                         |
-| formatted_event      | Formatted event.      | Home Assistant release party : in 1 week |
+| formatted_start      | Formatted start.      | Jul 3, 2024, 9:00 PM              |
+| formatted_start_date | Formatted start date. | Jul 3, 2024                       |
+| formatted_start_time | Formatted start time. | 9:00 PM                           |
+| formatted_end        | Formatted end.        | Jul 3, 2024, 10:00 PM             |
+| formatted_end_date   | Formatted end date.   | Jul 3, 2024                       |
+| formatted_end_time   | Formatted end time.   | 10:00 PM                          |
+| formatted_time_to    | Formatted time to.    | in 1 week                         |
+| formatted_event_time | Formatted event time. | in 1 week ?????                   |
+| formatted_event      | Formatted event.      | Home Assistant release party : in 1 week ????|
 
-It's possible to rotate between multiple Calendar sensor events in the same card by using the [Carousel helper integration](https://github.com/kgn3400/carousel)
+**Please note:** In the header template and calendar events template for generating the markdown_text attribute, the &lt;b/&gt; html line break tag can be used to start a new line.
 
 ## Actions
 
-Available actions: __toggle_show_as_time_to__
-
-### action calendar_merge.toggle_show_as_time_to
-
-Toggle 'Show calendar event as time to' option.
+None
 
 ### Support
 
