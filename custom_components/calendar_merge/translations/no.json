@@ -15,32 +15,36 @@
     },
     "step": {
       "user": {
-        "title": "Hjelp med kalendersammenslåing",
-        "description": "Kalendersammenslåingshjelperen lar deg lage en samlet oversikt for én eller flere kalendere. For et visst antall dager frem i tid og et maksimalt antall hendelser.",
+        "title": "Kalendersammenslåingshjelper",
+        "description": "Kalendersammenslåingshjelperen lar deg lage en samlet oversikt for én eller flere kalendere, for et visst antall dager frem i tid og et maksimalt antall hendelser.",
         "data": {
           "name": "Sensornavn",
-          "days_ahead": "Få kalenderhendelser dager fremover",
-          "max_events": "Få maksimalt antall kalenderhendelser",
+          "days_ahead": "Hent kalenderhendelser et visst antall dager frem",
+          "max_events": "Hent maksimalt antall kalenderhendelser",
           "remove_recurring_events": "Fjern gjentakende kalenderhendelser",
           "calender_entity_ids": "Kalendere denne sensoren overvåker"
         }
       },
       "user_format": {
-        "title": "Hjelp med kalendersammenslåing",
+        "title": "Kalendersammenslåingshjelper",
         "data": {
-          "show_event_as_time_to": "Vis kalenderhendelse som tid til",
-          "show_show_end_date": "Vis sluttdato",
-          "show_summary": "Vis sammendrag",
-          "use_summary_as_entity_name": "Bruk sammendrag som enhetsnavn",
-          "format_language": "Språk til usr for formatering av dato og klokkeslett",
-          "md_header_template": "Mal for kalenderoverskrift for nedsatt tekst",
-          "md_item_template": "Mal for kalenderhendelse for tekst med nedsatt markering. Verdier = pakkenavn, versjon og gammel_versjon. Bruk html-taggen 'br' for linjeskift."
+          "use_summary_as_entity_name": "Bruk sammendrag som entitetsnavn",
+          "calendar_prefix_in_summary": "Prefiks sammendraget med kalendernavn",
+          "format_date": "Datoformatering",
+          "md_header_template": "Kalenderoverskrift-mal for markdown-tekst. Bruk HTML-taggen 'br' for linjeskift",
+          "md_item_template": "Kalenderhendelses-mal for markdown-tekst. Bruk HTML-taggen 'br' for linjeskift",
+          "event_template": "Hendelsesskabelon for sensorhendelser"
+        },
+        "data_description": {
+          "md_header_template": "Se tilgjengelige malvariabler på https://github.com/kgn3400/calendar_merge?tab=readme-ov-file#template-variables",
+          "md_item_template": "Se tilgjengelige malvariabler på https://github.com/kgn3400/calendar_merge?tab=readme-ov-file#template-variables",
+          "event_template": "Se tilgjengelige malvariabler på https://github.com/kgn3400/calendar_merge?tab=readme-ov-file#template-variables"
         }
       },
       "unit_of_measurement": {
         "data": {
           "days": "dager",
-          "events": "arrangementer"
+          "events": "hendelser"
         }
       }
     }
@@ -57,27 +61,31 @@
       "init": {
         "data": {
           "name": "Sensornavn",
-          "days_ahead": "Få kalenderhendelser dager fremover",
-          "max_events": "Få maksimalt antall kalenderhendelser",
+          "days_ahead": "Hent kalenderhendelser et visst antall dager frem",
+          "max_events": "Hent maksimalt antall kalenderhendelser",
           "remove_recurring_events": "Fjern gjentakende kalenderhendelser",
           "calender_entity_ids": "Kalendere denne sensoren overvåker"
         }
       },
       "init_format": {
         "data": {
-          "show_event_as_time_to": "Vis kalenderhendelse som tid til",
-          "show_show_end_date": "Vis sluttdato",
-          "show_summary": "Vis sammendrag",
-          "use_summary_as_entity_name": "Bruk sammendrag som enhetsnavn",
-          "format_language": "Språk som skal brukes til formatering av dato og klokkeslett",
-          "md_header_template": "Topptekstmal for nedmerkingstekst",
-          "md_item_template": "Elementmal for nedmerkingstekst. Verdier = pakkenavn, versjon og gammel_versjon. Bruk html-taggen 'br' for linjeskift."
+          "use_summary_as_entity_name": "Bruk sammendrag som entitetsnavn",
+          "calendar_prefix_in_summary": "Prefiks sammendraget med kalendernavn",
+          "format_date": "Datoformatering",
+          "md_header_template": "Kalenderoverskrift-mal for markdown-tekst. Bruk HTML-taggen 'br' for linjeskift",
+          "md_item_template": "Kalenderhendelses-mal for markdown-tekst. Bruk HTML-taggen 'br' for linjeskift",
+          "event_template": "Hendelsesskabelon for sensorhendelser"
+        },
+        "data_description": {
+          "md_header_template": "Se tilgjengelige malvariabler på https://github.com/kgn3400/calendar_merge?tab=readme-ov-file#template-variables",
+          "md_item_template": "Se tilgjengelige malvariabler på https://github.com/kgn3400/calendar_merge?tab=readme-ov-file#template-variables",
+          "event_template": "Se tilgjengelige malvariabler på https://github.com/kgn3400/calendar_merge?tab=readme-ov-file#template-variables"
         }
       },
       "unit_of_measurement": {
         "data": {
           "days": "dager",
-          "events": "arrangementer"
+          "events": "hendelser"
         }
       }
     }
@@ -87,35 +95,41 @@
       "calendar_merge": {
         "state_attributes": {
           "events": {
-            "name": "Arrangementer"
+            "name": "Hendelser"
           },
           "markdown_text": {
             "name": "Markdown-tekst"
+          },
+          "calendar": {
+            "name": "Kalender"
           }
         }
+      }
+    },
+    "switch": {
+      "switch_show_as_time_to": {
+        "name": "Vis som tid til"
+      }
+    }
+  },
+  "selector": {
+    "format_date": {
+      "options": {
+        "full": "Full",
+        "long": "Lang",
+        "medium": "Middels",
+        "short": "Kort"
       }
     }
   },
   "issues": {
     "missing_calendar": {
-      "description": "Det ser ut til at enten kalenderenheten `{entity}` er slettet eller har fått nytt navn, som brukes i kalendersammenslåingshjelperen `{calendar_merge_helper}`.\n\nVennligst løs dette problemet.",
-      "title": "Hjelp for kalendersammenslåing: Enhet slettet eller omdøpt"
+      "description": "Det ser ut til at kalenderentiteten `{entity}`, som brukes i Kalendersammenslåingshjelperen `{calendar_merge_helper}`, enten har blitt slettet eller endret navn på.\n\nVennligst rett opp dette problemet.",
+      "title": "Kalendersammenslåingshjelper: Entitet slettet eller endret navn"
     },
     "template_error": {
-      "description": "Gjengivelse av markdown-malen `{template}` i kalenderflettingshjelperen `{calendar_merge_helper}` ender med en feil.\nFeil: `{error_txt}`\n\nVennligst løs dette problemet.",
-      "title": "Hjelp for kalendersammenslåing: Malfeil"
-    }
-  },
-  "services": {
-    "toggle_show_as_time_to": {
-      "description": "Aktiver alternativet «Vis kalenderhendelse som tid til». Velg kalenderhendelsesenheten uten postfikset _event_x.",
-      "name": "Aktiver alternativet «Vis kalenderhendelse som tid til»",
-      "fields": {
-        "save_settings": {
-          "description": "Lagre innstillinger-alternativet.",
-          "name": "Lagre innstillinger-alternativ"
-        }
-      }
+      "description": "Gjengivelse av markdown-malen `{template}` i Kalendersammenslåingshjelperen `{calendar_merge_helper}` ender i en feil.\nFeil: `{error_txt}`\n\nVennligst rett opp dette problemet.",
+      "title": "Kalendersammenslåingshjelper: Malfeil"
     }
   }
 }

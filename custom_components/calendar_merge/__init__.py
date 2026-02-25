@@ -7,10 +7,12 @@ from dataclasses import dataclass
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
+from homeassistant.generated.entity_platforms import EntityPlatforms
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 
 from .calendar_handler import CalendarHandler
 from .const import DOMAIN, LOGGER
+from .hass_util import check_supress_config_update_listener
 
 
 # ------------------------------------------------------------------
@@ -25,6 +27,12 @@ class CommonData:
 
 # The type alias needs to be suffixed with 'ConfigEntry'
 type CommonConfigEntry = ConfigEntry[CommonData]
+
+sensor_platforms: list[EntityPlatforms] = [
+    Platform.SENSOR,
+    Platform.CALENDAR,
+    Platform.SWITCH,
+]
 
 
 # ------------------------------------------------------------------
@@ -49,9 +57,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: CommonConfigEntry) -> bo
 
     entry.async_on_unload(entry.add_update_listener(config_update_listener))
 
-    await hass.config_entries.async_forward_entry_setups(
-        entry, [Platform.SENSOR, Platform.CALENDAR]
-    )
+    await hass.config_entries.async_forward_entry_setups(entry, sensor_platforms)
 
     return True
 
@@ -60,9 +66,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: CommonConfigEntry) -> bo
 async def async_unload_entry(hass: HomeAssistant, entry: CommonConfigEntry) -> bool:
     """Unload a config entry."""
 
-    return await hass.config_entries.async_unload_platforms(
-        entry, [Platform.SENSOR, Platform.CALENDAR]
-    )
+    return await hass.config_entries.async_unload_platforms(entry, sensor_platforms)
 
 
 # ------------------------------------------------------------------
@@ -73,14 +77,11 @@ async def async_reload_entry(hass: HomeAssistant, entry: CommonConfigEntry) -> N
 
 
 # ------------------------------------------------------------------
+@check_supress_config_update_listener()
 async def config_update_listener(
     hass: HomeAssistant,
     config_entry: CommonConfigEntry,
 ) -> None:
     """Reload on config entry update."""
-
-    if config_entry.runtime_data.calendar_handler.supress_update_listener:
-        config_entry.runtime_data.calendar_handler.supress_update_listener = False
-        return
 
     await hass.config_entries.async_reload(config_entry.entry_id)

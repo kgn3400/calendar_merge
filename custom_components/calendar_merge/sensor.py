@@ -6,13 +6,13 @@ from datetime import datetime, timedelta
 from functools import cached_property
 from typing import Any
 
-import voluptuous as vol
-
+# import voluptuous as vol
 from homeassistant.components.fan import FanEntityFeature
 from homeassistant.components.sensor import SensorEntity
+from homeassistant.const import MATCH_ALL
 from homeassistant.core import Event, HomeAssistant, ServiceCall
 from homeassistant.helpers import (
-    config_validation as cv,
+    # config_validation as cv,
     entity_platform,
     entity_registry as er,
     issue_registry as ir,
@@ -26,11 +26,11 @@ from .calendar_handler import CalendarHandler
 from .const import (
     CONF_CALENDAR_ENTITY_IDS,
     CONF_MAX_EVENTS,
-    CONF_SHOW_EVENT_AS_TIME_TO,
+    # CONF_SHOW_EVENT_AS_TIME_TO,
     CONF_USE_SUMMARY_AS_ENTITY_NAME,
     DOMAIN,
     DOMAIN_NAME,
-    SERVICE_SAVE_SETTINGS,
+    # SERVICE_SAVE_SETTINGS,
     TRANSLATION_KEY,
 )
 
@@ -94,6 +94,8 @@ class BaseCalendarMergeSensor:
 class CalendarMergeSensor(SensorEntity, BaseCalendarMergeSensor):
     """Sensor class for calendar merge."""
 
+    _unrecorded_attributes = frozenset({MATCH_ALL})
+
     # ------------------------------------------------------
     def __init__(
         self,
@@ -122,39 +124,37 @@ class CalendarMergeSensor(SensorEntity, BaseCalendarMergeSensor):
 
         self.platform: EntityPlatform = entity_platform.async_get_current_platform()
 
-        self.platform.async_register_entity_service(
-            "toggle_show_as_time_to",
-            {
-                vol.Optional(SERVICE_SAVE_SETTINGS): cv.boolean,
-            },
-            self.async_toggle_show_as_time_to,
-            [FanEntityFeature.SET_SPEED],  #! Cheating here
-        )
+        # self.platform.async_register_entity_service(
+        #     "toggle_show_as_time_to",
+        #     {
+        #         vol.Optional(SERVICE_SAVE_SETTINGS): cv.boolean,
+        #     },
+        #     self.async_toggle_show_as_time_to,
+        #     [FanEntityFeature.SET_SPEED],  #! Cheating here
+        # )
 
-    # ------------------------------------------------------------------
-    async def async_toggle_show_as_time_to(
-        self, entity: CalendarMergeSensor, service_data: ServiceCall
-    ) -> None:
-        """Toggle show time as time to."""
+    # # ------------------------------------------------------------------
+    # async def async_toggle_show_as_time_to(
+    #     self, entity: CalendarMergeSensor, service_data: ServiceCall
+    # ) -> None:
+    #     """Toggle show time as time to."""
 
-        entity.calendar_handler.show_event_as_time_to = (
-            not entity.calendar_handler.show_event_as_time_to
-        )
+    #     entity.calendar_handler.show_event_as_time_to = (
+    #         not entity.calendar_handler.show_event_as_time_to
+    #     )
 
-        if service_data.data.get(SERVICE_SAVE_SETTINGS, False):
-            tmp_entry_options: dict[str, Any] = self.entry.options.copy()
-            tmp_entry_options[CONF_SHOW_EVENT_AS_TIME_TO] = (
-                entity.calendar_handler.show_event_as_time_to
-            )
-            entity.update_settings(tmp_entry_options)
+    #     if service_data.data.get(SERVICE_SAVE_SETTINGS, False):
+    #         tmp_entry_options: dict[str, Any] = self.entry.options.copy()
+    #         tmp_entry_options[CONF_SHOW_EVENT_AS_TIME_TO] = (
+    #             entity.calendar_handler.show_event_as_time_to
+    #         )
+    #         entity.update_settings(tmp_entry_options)
 
-        await entity.coordinator.async_refresh()
+    #     await entity.coordinator.async_refresh()
 
     # ------------------------------------------------------------------
     def update_settings(self, entry_options: dict[str, Any]) -> None:
         """Update config."""
-
-        self.calendar_handler.supress_update_listener = True
 
         self.hass.config_entries.async_update_entry(
             self.entry, data=entry_options, options=entry_options
@@ -313,6 +313,8 @@ class CalendarMergeSensor(SensorEntity, BaseCalendarMergeSensor):
 # ------------------------------------------------------
 class CalendarMergeEventsSensor(SensorEntity, BaseCalendarMergeSensor):
     """Sensor class for calendar merge events."""
+
+    _unrecorded_attributes = frozenset({MATCH_ALL})
 
     # ------------------------------------------------------
     def __init__(

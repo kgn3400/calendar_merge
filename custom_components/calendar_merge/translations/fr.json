@@ -1,13 +1,13 @@
 {
-  "title": "Fusion de calendrier",
+  "title": "Fusion de calendriers",
   "entity_component": {
     "_": {
-      "name": "Fusion de calendrier"
+      "name": "Fusion de calendriers"
     }
   },
   "config": {
     "abort": {
-      "already_configured": "L'appareil est déjà configuré"
+      "already_configured": "L’appareil est déjà configuré"
     },
     "error": {
       "missing_selection": "Aucun calendrier sélectionné",
@@ -15,26 +15,30 @@
     },
     "step": {
       "user": {
-        "title": "Aide à la fusion du calendrier",
-        "description": "L'assistant de fusion de calendriers vous permet de créer une vue d'ensemble pour un ou plusieurs calendriers, pour un certain nombre de jours à venir et un nombre maximal d'événements.",
+        "title": "Assistant de fusion de calendriers",
+        "description": "L’assistant de fusion de calendriers vous permet de créer une vue d’ensemble pour un ou plusieurs calendriers, pour un certain nombre de jours à venir et un nombre maximal d’événements.",
         "data": {
           "name": "Nom du capteur",
-          "days_ahead": "Recevez les événements du calendrier des jours à l'avance",
-          "max_events": "Obtenez un maximum d'événements du calendrier",
-          "remove_recurring_events": "Supprimer les événements récurrents du calendrier",
+          "days_ahead": "Obtenir les événements du calendrier pour plusieurs jours à l’avance",
+          "max_events": "Obtenir un nombre maximal d’événements de calendrier",
+          "remove_recurring_events": "Supprimer les événements de calendrier récurrents",
           "calender_entity_ids": "Calendriers surveillés par ce capteur"
         }
       },
       "user_format": {
-        "title": "Aide à la fusion du calendrier",
+        "title": "Assistant de fusion de calendriers",
         "data": {
-          "show_event_as_time_to": "Afficher l'événement du calendrier comme heure de",
-          "show_show_end_date": "Afficher la date de fin",
-          "show_summary": "Afficher le résumé",
-          "use_summary_as_entity_name": "Utiliser le résumé comme nom d'entité",
-          "format_language": "Langue à utiliser pour le formatage de la date et de l'heure",
-          "md_header_template": "Modèle d'en-tête de calendrier pour le texte Markdown",
-          "md_item_template": "Modèle d'événement de calendrier pour texte Markdown. Valeurs : nom_du_package, version et ancienne_version. Utiliser la balise HTML « br » pour le saut de ligne."
+          "use_summary_as_entity_name": "Utiliser le résumé comme nom d’entité",
+          "calendar_prefix_in_summary": "Préfixer le résumé avec le nom du calendrier",
+          "format_date": "Format de date",
+          "md_header_template": "Modèle d’en-tête de calendrier pour texte Markdown. Utilisez la balise HTML 'br' pour un saut de ligne",
+          "md_item_template": "Modèle d’événement de calendrier pour texte Markdown. Utilisez la balise HTML 'br' pour un saut de ligne",
+          "event_template": "Modèle d’événement pour les événements du capteur"
+        },
+        "data_description": {
+          "md_header_template": "Voir les variables de modèle disponibles sur https://github.com/kgn3400/calendar_merge?tab=readme-ov-file#template-variables",
+          "md_item_template": "Voir les variables de modèle disponibles sur https://github.com/kgn3400/calendar_merge?tab=readme-ov-file#template-variables",
+          "event_template": "Voir les variables de modèle disponibles sur https://github.com/kgn3400/calendar_merge?tab=readme-ov-file#template-variables"
         }
       },
       "unit_of_measurement": {
@@ -47,7 +51,7 @@
   },
   "options": {
     "abort": {
-      "already_configured": "L'appareil est déjà configuré"
+      "already_configured": "L’appareil est déjà configuré"
     },
     "error": {
       "missing_selection": "Aucun calendrier sélectionné",
@@ -57,21 +61,25 @@
       "init": {
         "data": {
           "name": "Nom du capteur",
-          "days_ahead": "Recevez les événements du calendrier des jours à l'avance",
-          "max_events": "Obtenez un maximum d'événements du calendrier",
-          "remove_recurring_events": "Supprimer les événements récurrents du calendrier",
+          "days_ahead": "Obtenir les événements du calendrier pour plusieurs jours à l’avance",
+          "max_events": "Obtenir un nombre maximal d’événements de calendrier",
+          "remove_recurring_events": "Supprimer les événements de calendrier récurrents",
           "calender_entity_ids": "Calendriers surveillés par ce capteur"
         }
       },
       "init_format": {
         "data": {
-          "show_event_as_time_to": "Afficher l'événement du calendrier comme heure de",
-          "show_show_end_date": "Afficher la date de fin",
-          "show_summary": "Afficher le résumé",
-          "use_summary_as_entity_name": "Utiliser le résumé comme nom d'entité",
-          "format_language": "Langue à utiliser pour le formatage de la date et de l'heure",
-          "md_header_template": "Modèle d'en-tête pour le texte Markdown",
-          "md_item_template": "Modèle d'élément pour texte Markdown. Valeurs : nom_du_package, version et ancienne_version. Utiliser la balise HTML « br » pour le saut de ligne."
+          "use_summary_as_entity_name": "Utiliser le résumé comme nom d’entité",
+          "calendar_prefix_in_summary": "Préfixer le résumé avec le nom du calendrier",
+          "format_date": "Format de date",
+          "md_header_template": "Modèle d’en-tête de calendrier pour texte Markdown. Utilisez la balise HTML 'br' pour un saut de ligne",
+          "md_item_template": "Modèle d’événement de calendrier pour texte Markdown. Utilisez la balise HTML 'br' pour un saut de ligne",
+          "event_template": "Modèle d’événement pour les événements du capteur"
+        },
+        "data_description": {
+          "md_header_template": "Voir les variables de modèle disponibles sur https://github.com/kgn3400/calendar_merge?tab=readme-ov-file#template-variables",
+          "md_item_template": "Voir les variables de modèle disponibles sur https://github.com/kgn3400/calendar_merge?tab=readme-ov-file#template-variables",
+          "event_template": "Voir les variables de modèle disponibles sur https://github.com/kgn3400/calendar_merge?tab=readme-ov-file#template-variables"
         }
       },
       "unit_of_measurement": {
@@ -91,31 +99,37 @@
           },
           "markdown_text": {
             "name": "Texte Markdown"
+          },
+          "calendar": {
+            "name": "Calendrier"
           }
         }
+      }
+    },
+    "switch": {
+      "switch_show_as_time_to": {
+        "name": "Afficher comme temps restant"
+      }
+    }
+  },
+  "selector": {
+    "format_date": {
+      "options": {
+        "full": "Complet",
+        "long": "Long",
+        "medium": "Moyen",
+        "short": "Court"
       }
     }
   },
   "issues": {
     "missing_calendar": {
-      "description": "Il semble que l'une des entités de calendrier « {entity} » ait été supprimée ou renommée, ce qui est utilisé dans l'assistant de fusion de calendrier « {calendar_merge_helper} ».\n\nVeuillez corriger ce problème.",
-      "title": "Aide à la fusion du calendrier : entité supprimée ou renommée"
+      "description": "Il semble que l’entité de calendrier `{entity}`, utilisée dans l’assistant de fusion de calendriers `{calendar_merge_helper}`, ait été supprimée ou renommée.\n\nVeuillez corriger ce problème.",
+      "title": "Assistant de fusion de calendriers : entité supprimée ou renommée"
     },
     "template_error": {
-      "description": "Le rendu du modèle Markdown « {template} » dans l'assistant de fusion de calendrier « {calendar_merge_helper} » se termine par une erreur.\n\nErreur : « {error_txt} »\n\nVeuillez corriger ce problème.",
-      "title": "Aide à la fusion du calendrier : erreur de modèle"
-    }
-  },
-  "services": {
-    "toggle_show_as_time_to": {
-      "description": "Activez l'option « Afficher l'événement du calendrier comme heure de fin ». Choisissez l'entité « Événements du calendrier » sans suffixe _event_x.",
-      "name": "Activer/désactiver l'option « Afficher l'événement du calendrier comme heure de »",
-      "fields": {
-        "save_settings": {
-          "description": "Option Enregistrer les paramètres.",
-          "name": "Option d'enregistrement des paramètres"
-        }
-      }
+      "description": "Le rendu du modèle Markdown `{template}` dans l’assistant de fusion de calendriers `{calendar_merge_helper}` entraîne une erreur.\nErreur : `{error_txt}`\n\nVeuillez corriger ce problème.",
+      "title": "Assistant de fusion de calendriers : erreur de modèle"
     }
   }
 }

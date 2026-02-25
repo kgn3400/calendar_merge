@@ -7,7 +7,7 @@
   },
   "config": {
     "abort": {
-      "already_configured": "Das Gerät ist bereits konfiguriert"
+      "already_configured": "Gerät ist bereits konfiguriert"
     },
     "error": {
       "missing_selection": "Kein Kalender ausgewählt",
@@ -15,39 +15,43 @@
     },
     "step": {
       "user": {
-        "title": "Kalenderzusammenführungshilfe",
-        "description": "Mit dem Kalenderzusammenführungshelfer können Sie eine Gesamtübersicht für einen oder mehrere Kalender erstellen. Für eine bestimmte Anzahl von Tagen in der Zukunft und eine maximale Anzahl von Ereignissen.",
+        "title": "Assistent für Kalenderzusammenführung",
+        "description": "Der Assistent für Kalenderzusammenführung ermöglicht es dir, eine Gesamtübersicht für einen oder mehrere Kalender zu erstellen, für eine bestimmte Anzahl von Tagen in der Zukunft und eine maximale Anzahl von Terminen.",
         "data": {
           "name": "Sensorname",
-          "days_ahead": "Kalenderereignisse Tage im Voraus abrufen",
-          "max_events": "Maximale Anzahl an Kalenderereignissen abrufen",
-          "remove_recurring_events": "Entfernen wiederkehrender Kalenderereignisse",
-          "calender_entity_ids": "Kalender, die dieser Sensor überwacht"
+          "days_ahead": "Kalendertermine für X Tage im Voraus abrufen",
+          "max_events": "Maximale Anzahl von Kalenderterminen abrufen",
+          "remove_recurring_events": "Wiederkehrende Kalendertermine entfernen",
+          "calender_entity_ids": "Kalender, die von diesem Sensor überwacht werden"
         }
       },
       "user_format": {
-        "title": "Kalenderzusammenführungshilfe",
+        "title": "Assistent für Kalenderzusammenführung",
         "data": {
-          "show_event_as_time_to": "Kalenderereignis als Zeit anzeigen bis",
-          "show_show_end_date": "Enddatum anzeigen",
-          "show_summary": "Zusammenfassung anzeigen",
           "use_summary_as_entity_name": "Zusammenfassung als Entitätsnamen verwenden",
-          "format_language": "Sprache für die Formatierung von Datum und Uhrzeit",
-          "md_header_template": "Kalenderkopfzeilenvorlage für Markdown-Text",
-          "md_item_template": "Kalenderereignisvorlage für Markdown-Text. Werte = Paketname, Version und alte Version. Verwenden Sie den HTML-Tag „br“ für den Zeilenumbruch."
+          "calendar_prefix_in_summary": "Kalendernamen als Präfix in der Zusammenfassung verwenden",
+          "format_date": "Datumsformatierung",
+          "md_header_template": "Vorlage für Kalenderüberschrift in Markdown-Text. Verwende den HTML-Tag 'br' für Zeilenumbruch",
+          "md_item_template": "Vorlage für Kalendertermin in Markdown-Text. Verwende den HTML-Tag 'br' für Zeilenumbruch",
+          "event_template": "Ereignisvorlage für Sensorevents"
+        },
+        "data_description": {
+          "md_header_template": "Verfügbare Template-Variablen findest du unter https://github.com/kgn3400/calendar_merge?tab=readme-ov-file#template-variables",
+          "md_item_template": "Verfügbare Template-Variablen findest du unter https://github.com/kgn3400/calendar_merge?tab=readme-ov-file#template-variables",
+          "event_template": "Verfügbare Template-Variablen findest du unter https://github.com/kgn3400/calendar_merge?tab=readme-ov-file#template-variables"
         }
       },
       "unit_of_measurement": {
         "data": {
           "days": "Tage",
-          "events": "Veranstaltungen"
+          "events": "Termine"
         }
       }
     }
   },
   "options": {
     "abort": {
-      "already_configured": "Das Gerät ist bereits konfiguriert"
+      "already_configured": "Gerät ist bereits konfiguriert"
     },
     "error": {
       "missing_selection": "Kein Kalender ausgewählt",
@@ -57,27 +61,31 @@
       "init": {
         "data": {
           "name": "Sensorname",
-          "days_ahead": "Kalenderereignisse Tage im Voraus abrufen",
-          "max_events": "Maximale Anzahl an Kalenderereignissen abrufen",
-          "remove_recurring_events": "Entfernen wiederkehrender Kalenderereignisse",
-          "calender_entity_ids": "Kalender, die dieser Sensor überwacht"
+          "days_ahead": "Kalendertermine für X Tage im Voraus abrufen",
+          "max_events": "Maximale Anzahl von Kalenderterminen abrufen",
+          "remove_recurring_events": "Wiederkehrende Kalendertermine entfernen",
+          "calender_entity_ids": "Kalender, die von diesem Sensor überwacht werden"
         }
       },
       "init_format": {
         "data": {
-          "show_event_as_time_to": "Kalenderereignis als Zeit anzeigen bis",
-          "show_show_end_date": "Enddatum anzeigen",
-          "show_summary": "Zusammenfassung anzeigen",
           "use_summary_as_entity_name": "Zusammenfassung als Entitätsnamen verwenden",
-          "format_language": "Für die Formatierung von Datum und Uhrzeit zu verwendende Sprache",
-          "md_header_template": "Kopfzeilenvorlage für Markdown-Text",
-          "md_item_template": "Artikelvorlage für Markdown-Text. Werte = Paketname, Version und alte Version. Verwenden Sie den HTML-Tag „br“ für den Zeilenumbruch."
+          "calendar_prefix_in_summary": "Kalendernamen als Präfix in der Zusammenfassung verwenden",
+          "format_date": "Datumsformatierung",
+          "md_header_template": "Vorlage für Kalenderüberschrift in Markdown-Text. Verwende den HTML-Tag 'br' für Zeilenumbruch",
+          "md_item_template": "Vorlage für Kalendertermin in Markdown-Text. Verwende den HTML-Tag 'br' für Zeilenumbruch",
+          "event_template": "Ereignisvorlage für Sensorevents"
+        },
+        "data_description": {
+          "md_header_template": "Verfügbare Template-Variablen findest du unter https://github.com/kgn3400/calendar_merge?tab=readme-ov-file#template-variables",
+          "md_item_template": "Verfügbare Template-Variablen findest du unter https://github.com/kgn3400/calendar_merge?tab=readme-ov-file#template-variables",
+          "event_template": "Verfügbare Template-Variablen findest du unter https://github.com/kgn3400/calendar_merge?tab=readme-ov-file#template-variables"
         }
       },
       "unit_of_measurement": {
         "data": {
           "days": "Tage",
-          "events": "Veranstaltungen"
+          "events": "Termine"
         }
       }
     }
@@ -87,35 +95,41 @@
       "calendar_merge": {
         "state_attributes": {
           "events": {
-            "name": "Veranstaltungen"
+            "name": "Termine"
           },
           "markdown_text": {
             "name": "Markdown-Text"
+          },
+          "calendar": {
+            "name": "Kalender"
           }
         }
+      }
+    },
+    "switch": {
+      "switch_show_as_time_to": {
+        "name": "Als Zeit bis anzeigen"
+      }
+    }
+  },
+  "selector": {
+    "format_date": {
+      "options": {
+        "full": "Vollständig",
+        "long": "Lang",
+        "medium": "Mittel",
+        "short": "Kurz"
       }
     }
   },
   "issues": {
     "missing_calendar": {
-      "description": "Offenbar wurde die Kalenderentität „{entity}“ gelöscht oder umbenannt. Diese wird im Kalenderzusammenführungsassistenten „{calendar_merge_helper}“ verwendet.\n\nBitte beheben Sie dieses Problem.",
-      "title": "Kalenderzusammenführungshilfe: Entität gelöscht oder umbenannt"
+      "description": "Es sieht so aus, als ob die Kalenderentität `{entity}`, die im Assistenten für Kalenderzusammenführung `{calendar_merge_helper}` verwendet wird, entweder gelöscht oder umbenannt wurde.\n\nBitte behebe dieses Problem.",
+      "title": "Assistent für Kalenderzusammenführung: Entität gelöscht oder umbenannt"
     },
     "template_error": {
-      "description": "Das Rendern der Markdown-Vorlage „{template}“ im Kalender-Zusammenführungsassistenten „{calendar_merge_helper}“ endet mit einem Fehler.\n\nFehler: „{error_txt}“\n\nBitte beheben Sie dieses Problem.",
-      "title": "Kalenderzusammenführungshilfe: Vorlagenfehler"
-    }
-  },
-  "services": {
-    "toggle_show_as_time_to": {
-      "description": "Aktivieren Sie die Option „Kalenderereignis als Zeit bis anzeigen“. Wählen Sie die Entität „Kalenderereignisse“ ohne Suffix _event_x.",
-      "name": "Option „Kalenderereignis als Zeit bis anzeigen“ umschalten",
-      "fields": {
-        "save_settings": {
-          "description": "Option zum Speichern der Einstellungen.",
-          "name": "Option „Einstellungen speichern“"
-        }
-      }
+      "description": "Das Rendern der Markdown-Vorlage `{template}` im Assistenten für Kalenderzusammenführung `{calendar_merge_helper}` führt zu einem Fehler.\nFehler: `{error_txt}`\n\nBitte behebe dieses Problem.",
+      "title": "Assistent für Kalenderzusammenführung: Vorlagenfehler"
     }
   }
 }

@@ -21,6 +21,9 @@ from homeassistant.helpers.selector import (
     BooleanSelector,
     NumberSelector,
     NumberSelectorMode,
+    SelectSelector,
+    SelectSelectorConfig,
+    SelectSelectorMode,
     TextSelector,
     TextSelectorConfig,
     TextSelectorType,
@@ -30,21 +33,28 @@ from .const import (
     CONF_CALENDAR_ENTITY_IDS,
     CONF_CALENDAR_PREFIX_IN_SUMMARY,
     CONF_DAYS_AHEAD,
+    CONF_DEFAULT_MD_HEADER_TEMPLATE,
+    CONF_DEFAULT_MD_ITEM_TEMPLATE,
+    CONF_EVENT_TEMPLATE,
+    CONF_EVENT_TEMPLATE_DEFAULT,
+    CONF_FORMAT_DATE,
+    CONF_FORMAT_DATE_FULL,
+    CONF_FORMAT_DATE_LONG,
+    CONF_FORMAT_DATE_MEDIUM,
+    CONF_FORMAT_DATE_SHORT,
     CONF_MAX_EVENTS,
     CONF_MD_HEADER_TEMPLATE,
     CONF_MD_ITEM_TEMPLATE,
     CONF_REMOVE_RECURRING_EVENTS,
-    CONF_SHOW_END_DATE,
-    CONF_SHOW_EVENT_AS_TIME_TO,
-    CONF_SHOW_SUMMARY,
     CONF_USE_SUMMARY_AS_ENTITY_NAME,
     DOMAIN,
+    TRANSLATION_KEY_FORMAT_DATE,
 )
-from .hass_util import NumberSelectorConfigTranslate
+from .hass_util import NumberSelectorConfigTranslate, Translate
 
 # ------------------------------------------------------------------
-default_md_header_template = "### <font color= dodgerblue> <ha-icon icon='mdi:calendar-blank-outline'></ha-icon></font>  Kalenderbegivenheder <br>"
-default_md_item_template = "- <font color= dodgerblue> <ha-icon icon='mdi:calendar-clock-outline'></ha-icon></font> __{{ summary }}__ <br>_{{ formatted_event_time }}_<br>"
+# default_md_header_template = "### <font color= dodgerblue> <ha-icoicon='mdi:calendar-blank-outline'></ha-icon></font>  Kalenderbegivenheder <br>"
+# default_md_item_template = "- <font color= dodgerblue> <ha-icon icon='mdi:calendar-clock-outline'></ha-icon></font> __{{ summary }}__ <br>_{{ formatted_event_time }}_<br>"
 
 
 async def _validate_input(
@@ -131,18 +141,18 @@ async def format_schema(handler: SchemaCommonFlowHandler) -> vol.Schema:
 
     return vol.Schema(
         {
-            vol.Required(
-                CONF_SHOW_EVENT_AS_TIME_TO,
-                default=False,
-            ): BooleanSelector(),
-            vol.Required(
-                CONF_SHOW_END_DATE,
-                default=False,
-            ): BooleanSelector(),
-            vol.Required(
-                CONF_SHOW_SUMMARY,
-                default=True,
-            ): BooleanSelector(),
+            # vol.Required(
+            #     CONF_SHOW_EVENT_AS_TIME_TO,
+            #     default=False,
+            # ): BooleanSelector(),
+            # vol.Required(
+            #     CONF_SHOW_END_DATE,
+            #     default=False,
+            # ): BooleanSelector(),
+            # vol.Required(
+            #     CONF_SHOW_SUMMARY,
+            #     default=True,
+            # ): BooleanSelector(),
             vol.Required(
                 CONF_USE_SUMMARY_AS_ENTITY_NAME,
                 default=False,
@@ -151,15 +161,45 @@ async def format_schema(handler: SchemaCommonFlowHandler) -> vol.Schema:
                 CONF_CALENDAR_PREFIX_IN_SUMMARY,
                 default=False,
             ): BooleanSelector(),
-            vol.Optional(
+            vol.Required(
+                CONF_FORMAT_DATE, default=CONF_FORMAT_DATE_MEDIUM
+            ): SelectSelector(
+                SelectSelectorConfig(
+                    options=[
+                        CONF_FORMAT_DATE_FULL,
+                        CONF_FORMAT_DATE_LONG,
+                        CONF_FORMAT_DATE_MEDIUM,
+                        CONF_FORMAT_DATE_SHORT,
+                    ],
+                    sort=True,
+                    mode=SelectSelectorMode.DROPDOWN,
+                    translation_key=TRANSLATION_KEY_FORMAT_DATE,
+                )
+            ),
+            vol.Required(
                 CONF_MD_HEADER_TEMPLATE,
-                default=default_md_header_template,
+                default=await Translate(
+                    handler.parent_handler.hass
+                ).async_get_localized_str(
+                    CONF_DEFAULT_MD_HEADER_TEMPLATE,
+                    file_name="_defaults.json",
+                ),
             ): TextSelector(
                 TextSelectorConfig(multiline=True, type=TextSelectorType.TEXT)
             ),
-            vol.Optional(
+            vol.Required(
                 CONF_MD_ITEM_TEMPLATE,
-                default=default_md_item_template,
+                default=await Translate(
+                    handler.parent_handler.hass
+                ).async_get_localized_str(
+                    CONF_DEFAULT_MD_ITEM_TEMPLATE, file_name="_defaults.json"
+                ),
+            ): TextSelector(
+                TextSelectorConfig(multiline=True, type=TextSelectorType.TEXT)
+            ),
+            vol.Required(
+                CONF_EVENT_TEMPLATE,
+                default=CONF_EVENT_TEMPLATE_DEFAULT,
             ): TextSelector(
                 TextSelectorConfig(multiline=True, type=TextSelectorType.TEXT)
             ),

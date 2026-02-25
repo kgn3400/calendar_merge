@@ -28,14 +28,17 @@
       "user_format": {
         "title": "Calendar merge helper",
         "data": {
-          "show_event_as_time_to": "Show calendar event as time to",
-          "show_show_end_date": "Show end date",
-          "show_summary": "Show summary",
           "use_summary_as_entity_name": "Use summary as entity name",
           "calendar_prefix_in_summary": "Prefix summary with calendar name",
-          "format_language": "Language to usr for formatting date and time",
-          "md_header_template": "Calendar header template for markdown text",
-          "md_item_template": "Calendar event template for markdown text. Values = package_name, version and old_version. Use html tag 'br' for linebreak"
+          "format_date": "Date formatting",
+          "md_header_template": "Calendar header template for markdown text. Use html tag 'br' for linebreak",
+          "md_item_template": "Calendar event template for markdown text. Use html tag 'br' for linebreak",
+          "event_template": "Event template for sensor events"
+        },
+        "data_description": {
+          "md_header_template": "View available template variables at https://github.com/kgn3400/calendar_merge?tab=readme-ov-file#template-variables",
+          "md_item_template": "View available template variables” at https://github.com/kgn3400/calendar_merge?tab=readme-ov-file#template-variables",
+          "event_template": "View available template variables” at https://github.com/kgn3400/calendar_merge?tab=readme-ov-file#template-variables"
         }
       },
       "unit_of_measurement": {
@@ -66,14 +69,17 @@
       },
       "init_format": {
         "data": {
-          "show_event_as_time_to": "Show calendar event as time to",
-          "show_show_end_date": "Show end date",
-          "show_summary": "Show summary",
           "use_summary_as_entity_name": "Use summary as entity name",
           "calendar_prefix_in_summary": "Prefix summary with calendar name",
-          "format_language": "Language to use for formatting date and time",
-          "md_header_template": "Header template for markdown text",
-          "md_item_template": "Item template for markdown text. Values = package_name, version and old_version. Use html tag 'br' for linebreak"
+          "format_date": "Date formatting",
+          "md_header_template": "Calendar header template for markdown text. Use html tag 'br' for linebreak",
+          "md_item_template": "Calendar event template for markdown text. Use html tag 'br' for linebreak",
+          "event_template": "Event template for sensor events"
+        },
+        "data_description": {
+          "md_header_template": "View available template variables at https://github.com/kgn3400/calendar_merge?tab=readme-ov-file#template-variables",
+          "md_item_template": "View available template variables” at https://github.com/kgn3400/calendar_merge?tab=readme-ov-file#template-variables",
+          "event_template": "View available template variables” at https://github.com/kgn3400/calendar_merge?tab=readme-ov-file#template-variables"
         }
       },
       "unit_of_measurement": {
@@ -99,6 +105,21 @@
           }
         }
       }
+    },
+    "switch": {
+      "switch_show_as_time_to": {
+        "name": "Show as time to"
+      }
+    }
+  },
+  "selector": {
+    "format_date": {
+      "options": {
+        "full": "Full",
+        "long": "Long",
+        "medium": "Medium",
+        "short": "Short"
+      }
     }
   },
   "issues": {
@@ -109,18 +130,6 @@
     "template_error": {
       "description": "Rendering markdown template `{template}` in Calendar merge helper `{calendar_merge_helper}` ends in error.\nError: `{error_txt}` \n\n Please fix this problem.",
       "title": "Calendar merge helper: Template error"
-    }
-  },
-  "services": {
-    "toggle_show_as_time_to": {
-      "description": "Toggle 'Show calendar event as time to' option. Choose the calendar events entity without postfix _event_x.",
-      "name": "Toggle 'Show calendar event as time to' option",
-      "fields": {
-        "save_settings": {
-          "description": "Save settings option.",
-          "name": "Save settings option"
-        }
-      }
     }
   }
 }

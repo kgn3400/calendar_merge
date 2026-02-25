@@ -28,14 +28,17 @@
       "user_format": {
         "title": "Kalenderfletning hjælper",
         "data": {
-          "show_event_as_time_to": "Vis kalenderbegivenhed som tid til",
-          "show_show_end_date": "Vis slut dato",
-          "show_summary": "Vis Resumé",
+          "format_date": "Dato formattering",
           "use_summary_as_entity_name": "Brug resumé som entitets navn",
           "calendar_prefix_in_summary": "Præfiks resumé med kalendernavn",
-          "format_language": "Sprog der skal bruges til formattering af dato og tid",
-          "md_header_template": "Kalender header template til markdown tekst",
-          "md_item_template": "Kalenderbegivenhed template til markdown tekst. Værdier = package_name, version og old_version. Brug html tag 'br' for linjeskift"
+          "md_header_template": "Kalender header skabelon til markdown tekst. Brug html tag 'br' for linejeskift",
+          "md_item_template": "Kalenderbegivenhed skabelon til markdown tekst. Brug html tag 'br' for linjeskift",
+          "event_template": "Begivenhed skabelon til sensor kalenderbegivenheder"
+        },
+        "data_description": {
+          "md_header_template": "Se mulige skabelon variabler her https://github.com/kgn3400/calendar_merge?tab=readme-ov-file#template-variables",
+          "md_item_template": "Se mulige skabelon variabler her https://github.com/kgn3400/calendar_merge?tab=readme-ov-file#template-variables",
+          "event_template": "Se mulige skabelon variabler her https://github.com/kgn3400/calendar_merge?tab=readme-ov-file#template-variables"
         }
       },
       "unit_of_measurement": {
@@ -66,14 +69,17 @@
       },
       "init_format": {
         "data": {
-          "show_event_as_time_to": "Vis kalenderbegivenhed som tid til",
-          "show_show_end_date": "Vis slut dato",
-          "show_summary": "Vis Resumé",
+          "format_date": "Dato formattering",
           "use_summary_as_entity_name": "Brug resumé som entitets navn",
           "calendar_prefix_in_summary": "Præfiks resumé med kalendernavn",
-          "format_language": "Sprog der skal bruges til formattering af dato og tid",
-          "md_header_template": "Kalender header template til markdown tekst",
-          "md_item_template": "Kalenderbegivenhed template til markdown tekst. Værdier = package_name, version og old_version. Brug html tag 'br' for linjeskift"
+          "md_header_template": "Kalender header skabelon til markdown tekst. Brug html tag 'br' for linjeskift",
+          "md_item_template": "Kalenderbegivenhed skabelon til markdown tekst. Brug html tag 'br' for linjeskift",
+          "event_template": "Begivenhed skabelon til sensor kalenderbegivenheder"
+        },
+        "data_description": {
+          "md_header_template": "Se mulige skabelon variabler her https://github.com/kgn3400/calendar_merge?tab=readme-ov-file#template-variables",
+          "md_item_template": "Se mulige skabelon variabler her https://github.com/kgn3400/calendar_merge?tab=readme-ov-file#template-variables",
+          "event_template": "Se mulige skabelon variabler her https://github.com/kgn3400/calendar_merge?tab=readme-ov-file#template-variables"
         }
       },
       "unit_of_measurement": {
@@ -99,6 +105,11 @@
           }
         }
       }
+    },
+    "switch": {
+      "switch_show_as_time_to": {
+        "name": "Vis som tid til"
+      }
     }
   },
   "issues": {
@@ -109,18 +120,6 @@
     "template_error": {
       "description": "Behandling af markdown skabelon `{template}` i kalenderfletning hjælperen `{calendar_merge_helper}` fejler.\nFejl: `{error_txt}` \n\n Venligst ret dette problem.",
       "title": "Kalenderfletning hjælper: Skabelon fejl"
-    }
-  },
-  "services": {
-    "toggle_show_as_time_to": {
-      "description": "Skift 'Vis kalenderbegivenhed som tid til' indstilling. Vælg kalenderbegivenhed entiteten uden postfix _event_x.",
-      "name": "Skift 'Vis kalenderbegivenhed som tid til' indstilling",
-      "fields": {
-        "save_settings": {
-          "description": "Gem indstillinger.",
-          "name": "Gem indstillinger"
-        }
-      }
     }
   }
 }

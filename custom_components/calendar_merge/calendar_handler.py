@@ -3,11 +3,16 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import date, datetime, timedelta
+from datetime import date, datetime, time, timedelta
 from typing import Any
 
 from arrow.locales import get_locale
-from babel.dates import format_date, format_time, format_timedelta, get_datetime_format
+from babel.dates import (
+    format_date as babel_format_date,
+    format_time as babel_format_time,
+    format_timedelta as babel_format_timedelta,
+    get_datetime_format as babel_get_datetime_format,
+)
 
 from homeassistant.components.calendar import CalendarEvent
 from homeassistant.config_entries import ConfigEntry
@@ -22,13 +27,14 @@ from .const import (
     CONF_CALENDAR_ENTITY_IDS,
     CONF_CALENDAR_PREFIX_IN_SUMMARY,
     CONF_DAYS_AHEAD,
+    CONF_EVENT_TEMPLATE,
+    CONF_EVENT_TEMPLATE_DEFAULT,
+    CONF_FORMAT_DATE,
     CONF_MAX_EVENTS,
     CONF_MD_HEADER_TEMPLATE,
     CONF_MD_ITEM_TEMPLATE,
     CONF_REMOVE_RECURRING_EVENTS,
-    CONF_SHOW_END_DATE,
     CONF_SHOW_EVENT_AS_TIME_TO,
-    CONF_SHOW_SUMMARY,
     DOMAIN,
     DOMAIN_NAME,
     LOGGER,
@@ -124,9 +130,15 @@ class CalendarMergeEvent(CalendarEvent):
             )
 
         self.formatted_start: str = ""
+        self.formatted_start_date: str = ""
+        self.formatted_start_time: str = ""
         self.formatted_end: str = ""
+        self.formatted_end_date: str = ""
+        self.formatted_end_time: str = ""
+        self.formatted_time_to: str = ""
         self.formatted_event_time: str = ""
         self.formatted_event: str = ""
+
         super().__post_init__()
 
     # ------------------------------------------------------
@@ -174,8 +186,6 @@ class CalendarHandler:
 
         self.last_error_template: str = ""
         self.last_error_txt_template: str = ""
-        self.supress_update_listener: bool = False
-
         self.show_event_as_time_to: bool = entry.options.get(
             CONF_SHOW_EVENT_AS_TIME_TO, False
         )
@@ -277,41 +287,77 @@ class CalendarHandler:
             index += 1
 
     # ------------------------------------------------------
+    def format_date(
+        self,
+        date_time: datetime | date,
+    ) -> str | None:
+        """Format date."""
+        return babel_format_date(
+            date=date_time,
+            format=self.entry.options.get(CONF_FORMAT_DATE, "medium"),
+            locale=self.language,
+        )
+
+    # ------------------------------------------------------
     @async_hass_add_executor_job()
-    def format_datetime(
+    def async_format_date(
+        self,
+        date_time: datetime | date,
+    ) -> str | None:
+        """Format date."""
+        return self.format_date(date_time)
+
+    # ------------------------------------------------------
+    def format_time(
+        self,
+        date_time: datetime | time,
+    ) -> str | None:
+        """Format time."""
+        return babel_format_time(
+            time=date_time,
+            format="short",
+            locale=self.language,
+        )
+
+    # ------------------------------------------------------
+    @async_hass_add_executor_job()
+    def async_format_time(
+        self,
+        date_time: datetime | time,
+    ) -> str | None:
+        """Format time."""
+        return self.format_time(date_time)
+
+    # ------------------------------------------------------
+    @async_hass_add_executor_job()
+    def async_format_datetime(
         self,
         date_time: datetime | date,
     ) -> str | None:
         """Format datetime."""
 
-        date_str: str = format_date(
-            date=date_time,
-            format="medium",
-            locale=self.language,
-        )
+        date_str: str = self.format_date(date_time)
 
-        if isinstance(date_time, date):
+        if type(date_time) is date:
             return date_str
 
-        dt_format = get_datetime_format("medium", self.language)
+        time_str: str = self.format_time(date_time)
 
-        time_str: str = format_time(
-            time=date_time,
-            format="short",
-            locale=self.language,
+        dt_format = babel_get_datetime_format(
+            self.entry.options.get(CONF_FORMAT_DATE, "medium"), self.language
         )
 
         return dt_format.format(time_str, date_str)
 
     # ------------------------------------------------------
     @async_hass_add_executor_job()
-    def format_td(
+    def async_format_timedelta(
         self,
         time_delta: timedelta,
     ) -> str | None:
         """Format timedelte."""
 
-        return format_timedelta(
+        return babel_format_timedelta(
             time_delta,
             add_direction=True,
             locale=self.language,
@@ -324,33 +370,79 @@ class CalendarHandler:
         if event_num < len(self.events):
             tmp_event = self.events[event_num]
 
-            tmp_event.formatted_start = await self.format_datetime(tmp_event.start)
-            tmp_event.formatted_end = await self.format_datetime(tmp_event.end)
+            tmp_event.formatted_start = await self.async_format_datetime(
+                tmp_event.start
+            )
+            tmp_event.formatted_start_date = await self.async_format_date(
+                tmp_event.start
+            )
+            tmp_event.formatted_end = await self.async_format_datetime(tmp_event.end)
+            tmp_event.formatted_end_date = await self.async_format_date(tmp_event.end)
+
+            if not tmp_event.all_day:
+                tmp_event.formatted_start_time = await self.async_format_time(
+                    tmp_event.start
+                )
+                tmp_event.formatted_end_time = await self.async_format_time(
+                    tmp_event.end
+                )
+            else:
+                tmp_event.formatted_start_time = await self.async_format_time(
+                    time(0, 0)
+                )
+                tmp_event.formatted_end_time = await self.async_format_time(
+                    time(23, 59)
+                )
 
             diff: timedelta = tmp_event.start_datetime_local - dt_util.now()
 
             if tmp_event.all_day and diff.total_seconds() < 0:
-                formatted_event_str: str = (
+                tmp_event.formatted_time_to = (
                     get_locale(self.language).timeframes.get("now", "now").capitalize()
                 )
 
-            elif self.show_event_as_time_to:
-                formatted_event_str: str = await self.format_td(diff)
-
             else:
-                formatted_event_str = tmp_event.formatted_start
-                if (
-                    self.entry.options.get(CONF_SHOW_END_DATE, False)
-                    and not tmp_event.all_day
-                ):
-                    formatted_event_str = (
-                        formatted_event_str + " - " + tmp_event.formatted_end
-                    )
+                tmp_event.formatted_time_to = await self.async_format_timedelta(diff)
 
-            tmp_event.formatted_event_time = formatted_event_str
+            if self.show_event_as_time_to:
+                tmp_event.formatted_event_time = tmp_event.formatted_time_to
+            else:
+                tmp_event.formatted_event_time = tmp_event.formatted_start
 
-            if self.entry.options.get(CONF_SHOW_SUMMARY, False):
-                formatted_event_str = tmp_event.summary + " : " + formatted_event_str
+            try:
+                value_template: Template | None = Template(
+                    str(
+                        self.entry.options.get(
+                            CONF_EVENT_TEMPLATE, CONF_EVENT_TEMPLATE_DEFAULT
+                        )
+                    ),
+                    self.hass,
+                )
+                values = {
+                    "calendar": tmp_event.calendar,
+                    "start": tmp_event.start.isoformat(),
+                    "end": tmp_event.end.isoformat(),
+                    "all_day": tmp_event.all_day,
+                    "summary": tmp_event.summary,
+                    "description": tmp_event.description,
+                    "location": tmp_event.location,
+                    "formatted_start": tmp_event.formatted_start,
+                    "formatted_start_date": tmp_event.formatted_start_date,
+                    "formatted_start_time": tmp_event.formatted_start_time,
+                    "formatted_end": tmp_event.formatted_end,
+                    "formatted_end_date": tmp_event.formatted_end_date,
+                    "formatted_end_time": tmp_event.formatted_end_time,
+                    "formatted_time_to": tmp_event.formatted_time_to,
+                    "formatted_event_time": tmp_event.formatted_event_time,
+                }
+
+                formatted_event_str = value_template.async_render(values)
+
+            except (TypeError, TemplateError) as e:
+                self.create_issue_template(
+                    str(e), value_template.template, TRANSLATION_KEY_TEMPLATE_ERROR
+                )
+                return ""
 
             tmp_event.formatted_event = formatted_event_str
             self.events[event_num] = tmp_event
@@ -395,7 +487,20 @@ class CalendarHandler:
                     "description": replace_markdown_tags(item.description),
                     "location": replace_markdown_tags(item.location),
                     "formatted_start": replace_markdown_tags(item.formatted_start),
+                    "formatted_start_date": replace_markdown_tags(
+                        item.formatted_start_date
+                    ),
+                    "formatted_start_time": replace_markdown_tags(
+                        item.formatted_start_time
+                    ),
                     "formatted_end": replace_markdown_tags(item.formatted_end),
+                    "formatted_end_date": replace_markdown_tags(
+                        item.formatted_end_date
+                    ),
+                    "formatted_end_time": replace_markdown_tags(
+                        item.formatted_end_time
+                    ),
+                    "formatted_time_to": replace_markdown_tags(item.formatted_time_to),
                     "formatted_event": replace_markdown_tags(item.formatted_event),
                     "formatted_event_time": replace_markdown_tags(
                         item.formatted_event_time
