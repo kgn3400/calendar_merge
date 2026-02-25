@@ -68,3 +68,4 @@ The template variables listed below are available for calendar event formatting.
 ### Support
 
 If you like this integration or find it useful, please consider giving it a ⭐️ on GitHub 👍 Your support is greatly appreciated!
+
