@@ -60,12 +60,15 @@ The template variables listed below are available for calendar event formatting.
 | formatted_end_date   | Formatted end date.   | Jul 3, 2024                       |
 | formatted_end_time   | Formatted end time.   | 10:00 PM                          |
 | formatted_time_to    | Formatted time to.    | in 1 week                         |
-| formatted_event_time | Formatted event time. | Jul 3, 2024, 9:00 PM or in 1 week |
-| formatted_event      | Formatted event.<br/>NB. Can only be used in calender events template.       | Home Assistant release party : in 1 week |
+| formatted_event_time | Formatted event time. | in 1 week ?????                   |
+| formatted_event      | Formatted event.      | Home Assistant release party : in 1 week ????|
 
 **Please note:** In the header template and calendar events template for generating the markdown_text attribute, the &lt;b/&gt; html line break tag can be used to start a new line.
+
+## Actions
+
+None
 
 ### Support
 
 If you like this integration or find it useful, please consider giving it a ⭐️ on GitHub 👍 Your support is greatly appreciated!
-
