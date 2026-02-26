@@ -29,7 +29,6 @@
         "title": "Assistent für Kalenderzusammenführung",
         "data": {
           "use_summary_as_entity_name": "Zusammenfassung als Entitätsnamen verwenden",
-          "calendar_prefix_in_summary": "Kalendernamen als Präfix in der Zusammenfassung verwenden",
           "format_date": "Datumsformatierung",
           "md_header_template": "Vorlage für Kalenderüberschrift in Markdown-Text. Verwende den HTML-Tag 'br' für Zeilenumbruch",
           "md_item_template": "Vorlage für Kalendertermin in Markdown-Text. Verwende den HTML-Tag 'br' für Zeilenumbruch",
@@ -70,7 +69,6 @@
       "init_format": {
         "data": {
           "use_summary_as_entity_name": "Zusammenfassung als Entitätsnamen verwenden",
-          "calendar_prefix_in_summary": "Kalendernamen als Präfix in der Zusammenfassung verwenden",
           "format_date": "Datumsformatierung",
           "md_header_template": "Vorlage für Kalenderüberschrift in Markdown-Text. Verwende den HTML-Tag 'br' für Zeilenumbruch",
           "md_item_template": "Vorlage für Kalendertermin in Markdown-Text. Verwende den HTML-Tag 'br' für Zeilenumbruch",

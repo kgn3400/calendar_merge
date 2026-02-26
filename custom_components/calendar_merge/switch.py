@@ -5,13 +5,17 @@ from typing import Any
 from homeassistant.components.switch import SwitchEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 
 from . import CommonConfigEntry
 from .calendar_handler import CalendarHandler
-from .const import CONF_SHOW_EVENT_AS_TIME_TO, TRANSLATION_KEY_SWITCH_SHOW_AS_TIME_TO
-from .hass_util import set_supress_config_update_listener
+from .const import (
+    CONF_SHOW_EVENT_AS_TIME_TO,
+    DOMAIN,
+    TRANSLATION_KEY_SWITCH_SHOW_AS_TIME_TO,
+)
 
 
 async def async_setup_entry(
@@ -43,22 +47,16 @@ class ShowAsTimeTo(SwitchEntity):
 
         self.translation_key = TRANSLATION_KEY_SWITCH_SHOW_AS_TIME_TO
         self.has_entity_name = True
-        self.pause: bool = False
+        self._attr_device_info = DeviceInfo(
+            identifiers={(DOMAIN, self.entry.title)},
+            name=self.entry.title,
+        )
 
     @property
     # ------------------------------------------------------
     def is_on(self) -> bool:
         """Return True if entity is on."""
         return self.calendar_handler.show_event_as_time_to
-
-    # ------------------------------------------------------------------
-    @set_supress_config_update_listener()
-    def update_settings(self, entry_options: dict[str, Any]) -> None:
-        """Update config."""
-
-        self.hass.config_entries.async_update_entry(
-            self.entry, data=entry_options, options=entry_options
-        )
 
     # ------------------------------------------------------
     async def async_turn_on(self, **kwargs: Any) -> None:
@@ -70,7 +68,7 @@ class ShowAsTimeTo(SwitchEntity):
         tmp_entry_options[CONF_SHOW_EVENT_AS_TIME_TO] = (
             self.calendar_handler.show_event_as_time_to
         )
-        self.update_settings(tmp_entry_options)
+        self.calendar_handler.update_settings(tmp_entry_options)
 
         await self.coordinator.async_refresh()
 
@@ -83,7 +81,7 @@ class ShowAsTimeTo(SwitchEntity):
         tmp_entry_options[CONF_SHOW_EVENT_AS_TIME_TO] = (
             self.calendar_handler.show_event_as_time_to
         )
-        self.update_settings(tmp_entry_options)
+        self.calendar_handler.update_settings(tmp_entry_options)
 
         await self.coordinator.async_refresh()
 
@@ -96,7 +94,8 @@ class ShowAsTimeTo(SwitchEntity):
     #         str: Name of sensor
 
     #     """
-    #     return self.entry.title + " Show as time to"
+    #     return f"{self.entry.title}_{TRANSLATION_KEY_SWITCH_SHOW_AS_TIME_TO}"
+    #     # return self.entry.title + " Show as time to"
 
     # ------------------------------------------------------
     @property
@@ -108,3 +107,5 @@ class ShowAsTimeTo(SwitchEntity):
 
         """
         return f"{self.entry.entry_id}_{TRANSLATION_KEY_SWITCH_SHOW_AS_TIME_TO}"
+
+        # return f"{self.entry.entry_id}_{TRANSLATION_KEY_SWITCH_SHOW_AS_TIME_TO}"

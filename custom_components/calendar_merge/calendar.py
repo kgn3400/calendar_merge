@@ -41,7 +41,6 @@ class EventsCalendar(CalendarEntity):
 
         self.hass: HomeAssistant = hass
         self.entry: CommonConfigEntry = entry
-
         self.coordinator: DataUpdateCoordinator = entry.runtime_data.coordinator
         self.calendar_handler: CalendarHandler = entry.runtime_data.calendar_handler
 

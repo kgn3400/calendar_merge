@@ -29,7 +29,6 @@
         "title": "Assistente de mesclagem de calendários",
         "data": {
           "use_summary_as_entity_name": "Usar o resumo como nome da entidade",
-          "calendar_prefix_in_summary": "Adicionar o nome do calendário como prefixo no resumo",
           "format_date": "Formatação de data",
           "md_header_template": "Modelo de cabeçalho de calendário para texto markdown. Use a tag HTML 'br' para quebra de linha",
           "md_item_template": "Modelo de evento de calendário para texto markdown. Use a tag HTML 'br' para quebra de linha",
@@ -70,7 +69,6 @@
       "init_format": {
         "data": {
           "use_summary_as_entity_name": "Usar o resumo como nome da entidade",
-          "calendar_prefix_in_summary": "Adicionar o nome do calendário como prefixo no resumo",
           "format_date": "Formatação de data",
           "md_header_template": "Modelo de cabeçalho de calendário para texto markdown. Use a tag HTML 'br' para quebra de linha",
           "md_item_template": "Modelo de evento de calendário para texto markdown. Use a tag HTML 'br' para quebra de linha",

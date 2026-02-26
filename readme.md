@@ -65,6 +65,10 @@ The template variables listed below are available for calendar event formatting.
 
 **Please note:** In the header template and calendar events template for generating the markdown_text attribute, the &lt;b/&gt; html line break tag can be used to start a new line.
 
+## Switch
+
+Use the switch to toggle whether formatted_event_time is shown as time to event or as a formatted date.
+
 ### Support
 
 If you like this integration or find it useful, please consider giving it a ⭐️ on GitHub 👍 Your support is greatly appreciated!

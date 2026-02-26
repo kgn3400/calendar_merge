@@ -29,7 +29,6 @@
         "title": "Kalendersammenslåingshjelper",
         "data": {
           "use_summary_as_entity_name": "Bruk sammendrag som entitetsnavn",
-          "calendar_prefix_in_summary": "Prefiks sammendraget med kalendernavn",
           "format_date": "Datoformatering",
           "md_header_template": "Kalenderoverskrift-mal for markdown-tekst. Bruk HTML-taggen 'br' for linjeskift",
           "md_item_template": "Kalenderhendelses-mal for markdown-tekst. Bruk HTML-taggen 'br' for linjeskift",
@@ -70,7 +69,6 @@
       "init_format": {
         "data": {
           "use_summary_as_entity_name": "Bruk sammendrag som entitetsnavn",
-          "calendar_prefix_in_summary": "Prefiks sammendraget med kalendernavn",
           "format_date": "Datoformatering",
           "md_header_template": "Kalenderoverskrift-mal for markdown-tekst. Bruk HTML-taggen 'br' for linjeskift",
           "md_item_template": "Kalenderhendelses-mal for markdown-tekst. Bruk HTML-taggen 'br' for linjeskift",

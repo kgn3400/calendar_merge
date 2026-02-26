@@ -9,6 +9,7 @@ from typing import Any
 from arrow.locales import get_locale
 from babel.dates import (
     format_date as babel_format_date,
+    format_datetime as babel_format_datetime,
     format_time as babel_format_time,
     format_timedelta as babel_format_timedelta,
     get_datetime_format as babel_get_datetime_format,
@@ -25,7 +26,6 @@ from homeassistant.util import dt as dt_util
 
 from .const import (
     CONF_CALENDAR_ENTITY_IDS,
-    CONF_CALENDAR_PREFIX_IN_SUMMARY,
     CONF_DAYS_AHEAD,
     CONF_EVENT_TEMPLATE,
     CONF_EVENT_TEMPLATE_DEFAULT,
@@ -41,7 +41,11 @@ from .const import (
     TRANSLATION_KEY_MISSING_CALENDER,
     TRANSLATION_KEY_TEMPLATE_ERROR,
 )
-from .hass_util import async_get_user_language, async_hass_add_executor_job
+from .hass_util import (
+    async_get_user_language,
+    async_hass_add_executor_job,
+    set_supress_config_update_listener,
+)
 
 
 # ------------------------------------------------------
@@ -190,12 +194,24 @@ class CalendarHandler:
             CONF_SHOW_EVENT_AS_TIME_TO, False
         )
 
+        self.suppress_update_listener = True
+
     # ------------------------------------------------------
     async def async_init(
         self,
     ) -> None:
         """Async init."""
         self.language = await async_get_user_language()
+
+    # ------------------------------------------------------------------
+    @set_supress_config_update_listener()
+    def update_settings(self, entry_options: dict[str, Any]) -> None:
+        """Update config."""
+
+        self.suppress_update_listener = True
+        self.hass.config_entries.async_update_entry(
+            self.entry, data=entry_options, options=entry_options
+        )
 
     # ------------------------------------------------------
     async def async_merge_calendar_events(
@@ -228,20 +244,14 @@ class CalendarHandler:
             LOGGER.error(err)
             return
 
-        for calendar_namr in tmp_events:
-            for event in tmp_events[calendar_namr]["events"]:
+        for calendar_name in tmp_events:
+            for event in tmp_events[calendar_name]["events"]:
                 self.events.append(
                     CalendarMergeEvent(
-                        fix_calendar_name(calendar_namr),
+                        fix_calendar_name(calendar_name),
                         event["start"],
                         event["end"],
-                        fix_calendar_name(calendar_namr)
-                        + "-"
-                        + event.get("summary", "")
-                        if self.entry.options.get(
-                            CONF_CALENDAR_PREFIX_IN_SUMMARY, False
-                        )
-                        else event.get("summary", ""),
+                        event.get("summary", ""),
                         event.get("description", ""),
                         event.get("location", ""),
                     )
@@ -285,6 +295,27 @@ class CalendarHandler:
                         del self.events[index2]
 
             index += 1
+
+    # ------------------------------------------------------
+    def format_datetime(
+        self,
+        date_time: datetime | date,
+    ) -> str | None:
+        """Format date."""
+        return babel_format_datetime(
+            datetime=date_time,
+            format=self.entry.options.get(CONF_FORMAT_DATE, "medium"),
+            locale=self.language,
+        )
+
+    # ------------------------------------------------------
+    @async_hass_add_executor_job()
+    def async_format_datetime_x(
+        self,
+        date_time: datetime | date,
+    ) -> str | None:
+        """Format datetime."""
+        return self.format_datetime(date_time)
 
     # ------------------------------------------------------
     def format_date(

@@ -84,4 +84,8 @@ async def config_update_listener(
 ) -> None:
     """Reload on config entry update."""
 
+    if config_entry.runtime_data.calendar_handler.suppress_update_listener:
+        config_entry.runtime_data.calendar_handler.suppress_update_listener = False
+        return
+
     await hass.config_entries.async_reload(config_entry.entry_id)

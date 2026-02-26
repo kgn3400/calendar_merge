@@ -30,7 +30,6 @@
         "data": {
           "format_date": "Dato formattering",
           "use_summary_as_entity_name": "Brug resumé som entitets navn",
-          "calendar_prefix_in_summary": "Præfiks resumé med kalendernavn",
           "md_header_template": "Kalender header skabelon til markdown tekst. Brug html tag 'br' for linejeskift",
           "md_item_template": "Kalenderbegivenhed skabelon til markdown tekst. Brug html tag 'br' for linjeskift",
           "event_template": "Begivenhed skabelon til sensor kalenderbegivenheder"
@@ -71,7 +70,6 @@
         "data": {
           "format_date": "Dato formattering",
           "use_summary_as_entity_name": "Brug resumé som entitets navn",
-          "calendar_prefix_in_summary": "Præfiks resumé med kalendernavn",
           "md_header_template": "Kalender header skabelon til markdown tekst. Brug html tag 'br' for linjeskift",
           "md_item_template": "Kalenderbegivenhed skabelon til markdown tekst. Brug html tag 'br' for linjeskift",
           "event_template": "Begivenhed skabelon til sensor kalenderbegivenheder"

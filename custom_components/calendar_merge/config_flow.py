@@ -31,7 +31,6 @@ from homeassistant.helpers.selector import (
 
 from .const import (
     CONF_CALENDAR_ENTITY_IDS,
-    CONF_CALENDAR_PREFIX_IN_SUMMARY,
     CONF_DAYS_AHEAD,
     CONF_DEFAULT_MD_HEADER_TEMPLATE,
     CONF_DEFAULT_MD_ITEM_TEMPLATE,
@@ -141,25 +140,9 @@ async def format_schema(handler: SchemaCommonFlowHandler) -> vol.Schema:
 
     return vol.Schema(
         {
-            # vol.Required(
-            #     CONF_SHOW_EVENT_AS_TIME_TO,
-            #     default=False,
-            # ): BooleanSelector(),
-            # vol.Required(
-            #     CONF_SHOW_END_DATE,
-            #     default=False,
-            # ): BooleanSelector(),
-            # vol.Required(
-            #     CONF_SHOW_SUMMARY,
-            #     default=True,
-            # ): BooleanSelector(),
             vol.Required(
                 CONF_USE_SUMMARY_AS_ENTITY_NAME,
-                default=False,
-            ): BooleanSelector(),
-            vol.Required(
-                CONF_CALENDAR_PREFIX_IN_SUMMARY,
-                default=False,
+                default=True,
             ): BooleanSelector(),
             vol.Required(
                 CONF_FORMAT_DATE, default=CONF_FORMAT_DATE_MEDIUM

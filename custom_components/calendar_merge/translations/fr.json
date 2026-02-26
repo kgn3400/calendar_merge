@@ -29,7 +29,6 @@
         "title": "Assistant de fusion de calendriers",
         "data": {
           "use_summary_as_entity_name": "Utiliser le résumé comme nom d’entité",
-          "calendar_prefix_in_summary": "Préfixer le résumé avec le nom du calendrier",
           "format_date": "Format de date",
           "md_header_template": "Modèle d’en-tête de calendrier pour texte Markdown. Utilisez la balise HTML 'br' pour un saut de ligne",
           "md_item_template": "Modèle d’événement de calendrier pour texte Markdown. Utilisez la balise HTML 'br' pour un saut de ligne",
@@ -70,7 +69,6 @@
       "init_format": {
         "data": {
           "use_summary_as_entity_name": "Utiliser le résumé comme nom d’entité",
-          "calendar_prefix_in_summary": "Préfixer le résumé avec le nom du calendrier",
           "format_date": "Format de date",
           "md_header_template": "Modèle d’en-tête de calendrier pour texte Markdown. Utilisez la balise HTML 'br' pour un saut de ligne",
           "md_item_template": "Modèle d’événement de calendrier pour texte Markdown. Utilisez la balise HTML 'br' pour un saut de ligne",

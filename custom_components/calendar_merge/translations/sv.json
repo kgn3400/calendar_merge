@@ -29,7 +29,6 @@
         "title": "Hjälpare för kalendersammanslagning",
         "data": {
           "use_summary_as_entity_name": "Använd sammanfattning som enhetsnamn",
-          "calendar_prefix_in_summary": "Lägg till kalendernamn som prefix i sammanfattningen",
           "format_date": "Datumformat",
           "md_header_template": "Mall för kalenderhuvud för markdown-text. Använd HTML-taggen 'br' för radbrytning",
           "md_item_template": "Mall för kalenderhändelse för markdown-text. Använd HTML-taggen 'br' för radbrytning",
@@ -70,7 +69,6 @@
       "init_format": {
         "data": {
           "use_summary_as_entity_name": "Använd sammanfattning som enhetsnamn",
-          "calendar_prefix_in_summary": "Lägg till kalendernamn som prefix i sammanfattningen",
           "format_date": "Datumformat",
           "md_header_template": "Mall för kalenderhuvud för markdown-text. Använd HTML-taggen 'br' för radbrytning",
           "md_item_template": "Mall för kalenderhändelse för markdown-text. Använd HTML-taggen 'br' för radbrytning",

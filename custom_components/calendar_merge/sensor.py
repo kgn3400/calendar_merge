@@ -13,12 +13,12 @@ from homeassistant.const import MATCH_ALL
 from homeassistant.core import Event, HomeAssistant, ServiceCall
 from homeassistant.helpers import (
     # config_validation as cv,
-    entity_platform,
     entity_registry as er,
     issue_registry as ir,
     start,
 )
-from homeassistant.helpers.entity_platform import AddEntitiesCallback, EntityPlatform
+from homeassistant.helpers.entity import DeviceInfo
+from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 
 from . import CommonConfigEntry
@@ -109,6 +109,11 @@ class CalendarMergeSensor(SensorEntity, BaseCalendarMergeSensor):
         self.hass: HomeAssistant = hass
         self.entry: CommonConfigEntry = entry
 
+        self._attr_device_info = DeviceInfo(
+            identifiers={(DOMAIN, self.entry.title)},
+            name=self.entry.title,
+        )
+
         self.calendar_entities: list[str] = calendar_entities
         self.events_sensors: list[CalendarMergeEventsSensor] = events_sensors
 
@@ -122,7 +127,7 @@ class CalendarMergeSensor(SensorEntity, BaseCalendarMergeSensor):
         self.coordinator.update_method = self.async_refresh
         self.coordinator.update_interval = timedelta(minutes=5)
 
-        self.platform: EntityPlatform = entity_platform.async_get_current_platform()
+        # self.platform: EntityPlatform = entity_platform.async_get_current_platform()
 
         # self.platform.async_register_entity_service(
         #     "toggle_show_as_time_to",
@@ -327,6 +332,10 @@ class CalendarMergeEventsSensor(SensorEntity, BaseCalendarMergeSensor):
 
         self.hass: HomeAssistant = hass
         self.entry: CommonConfigEntry = entry
+        self._attr_device_info = DeviceInfo(
+            identifiers={(DOMAIN, self.entry.title)},
+            name=self.entry.title,
+        )
 
         self.calendar_handler: CalendarHandler = entry.runtime_data.calendar_handler
 

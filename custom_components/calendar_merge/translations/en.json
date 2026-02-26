@@ -29,7 +29,6 @@
         "title": "Calendar merge helper",
         "data": {
           "use_summary_as_entity_name": "Use summary as entity name",
-          "calendar_prefix_in_summary": "Prefix summary with calendar name",
           "format_date": "Date formatting",
           "md_header_template": "Calendar header template for markdown text. Use html tag 'br' for linebreak",
           "md_item_template": "Calendar event template for markdown text. Use html tag 'br' for linebreak",
@@ -70,7 +69,6 @@
       "init_format": {
         "data": {
           "use_summary_as_entity_name": "Use summary as entity name",
-          "calendar_prefix_in_summary": "Prefix summary with calendar name",
           "format_date": "Date formatting",
           "md_header_template": "Calendar header template for markdown text. Use html tag 'br' for linebreak",
           "md_item_template": "Calendar event template for markdown text. Use html tag 'br' for linebreak",

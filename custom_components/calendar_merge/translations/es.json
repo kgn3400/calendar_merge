@@ -29,7 +29,6 @@
         "title": "Asistente de fusión de calendarios",
         "data": {
           "use_summary_as_entity_name": "Usar el resumen como nombre de la entidad",
-          "calendar_prefix_in_summary": "Anteponer el nombre del calendario al resumen",
           "format_date": "Formato de fecha",
           "md_header_template": "Plantilla de encabezado de calendario para texto markdown. Usa la etiqueta HTML 'br' para salto de línea",
           "md_item_template": "Plantilla de evento de calendario para texto markdown. Usa la etiqueta HTML 'br' para salto de línea",
@@ -70,7 +69,6 @@
       "init_format": {
         "data": {
           "use_summary_as_entity_name": "Usar el resumen como nombre de la entidad",
-          "calendar_prefix_in_summary": "Anteponer el nombre del calendario al resumen",
           "format_date": "Formato de fecha",
           "md_header_template": "Plantilla de encabezado de calendario para texto markdown. Usa la etiqueta HTML 'br' para salto de línea",
           "md_item_template": "Plantilla de evento de calendario para texto markdown. Usa la etiqueta HTML 'br' para salto de línea",
