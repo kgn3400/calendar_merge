@@ -101,7 +101,7 @@ async def config_option_dict(handler: SchemaCommonFlowHandler) -> dict[str, Any]
             await NumberSelectorConfigTranslate(
                 handler.parent_handler.hass,
                 min=1,
-                max=20,
+                max=100,
                 step="any",
                 mode=NumberSelectorMode.BOX,
                 unit_of_measurement="events",

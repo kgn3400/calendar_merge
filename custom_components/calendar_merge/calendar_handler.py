@@ -194,7 +194,7 @@ class CalendarHandler:
             CONF_SHOW_EVENT_AS_TIME_TO, False
         )
 
-        self.suppress_update_listener = True
+        self.suppress_update_listener = False
 
     # ------------------------------------------------------
     async def async_init(
