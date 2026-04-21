@@ -44,6 +44,20 @@ async def async_setup_entry(
     """Sensor setup."""
 
     registry = er.async_get(hass)
+    entities: list[er.EntityRegistry] = er.async_entries_for_config_entry(
+        registry, entry.entry_id
+    )
+
+    # Automatic remove unused entities
+    for entity in entities:
+        parts = entity.unique_id.split("_event_")
+
+        if len(parts) > 1:
+            event_idx = int(parts[1])
+
+            if event_idx >= int(entry.options.get(CONF_MAX_EVENTS, 5)):
+                registry.async_remove(entity.entity_id)
+
     calendar_entities = er.async_validate_entity_ids(
         registry, entry.options[CONF_CALENDAR_ENTITY_IDS]
     )
